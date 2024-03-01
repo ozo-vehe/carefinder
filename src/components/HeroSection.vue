@@ -27,15 +27,15 @@ const handleSearch = () => {
 <template>
   <header class="hero px-5 lg:px-20 md:px-16 sm:px-12 min-h-[600px] flex flex-col items-center justify-evenly">
     <div class="header_text flex flex-col gap-2 items-center justify-center">
-      <h1 class="text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">Empower Your Health Journey with <br><span class="text-green_v_2">CareFinder</span></h1>
+      <h1 class="text-[40px] lg:text-[48px] md:text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">Empower Your Health Journey with <br><span class="text-green_v_2">CareFinder</span></h1>
       <p class="text-slate-500 max-w-[450px] text-center">Discover, Export, and Share Hospitals in Your Region. Navigating Wellness Made Simple</p>
     </div>
 
-    <div class="header_links flex flex-wrap gap-10 items-end lg:justify-between md:justify-between sm:justify-center justify-center w-full">
+    <div class="header_links flex flex-wrap gap-10 items-end lg:justify-between md:justify-center sm:justify-center justify-center w-full">
       <div class="header_sponsors">
         <h3 class="text-slate-500 mb-4 lg:text-left md:text-left sm:text-center text-center">Trusted by 10+ companies in Nigeria</h3>
-        <div class="sponsors flex gap-6">
-          <img v-for="sponsor in sponsors" :key="sponsor.name" :src="sponsor.image" :alt="sponsor.name">
+        <div class="sponsors flex items-center flex-wrap justify-center gap-6">
+          <img class="w-20 h-fit lg:w-24 md:w-24" v-for="sponsor in sponsors" :key="sponsor.name" :src="sponsor.image" :alt="sponsor.name">
         </div>
       </div>
 
