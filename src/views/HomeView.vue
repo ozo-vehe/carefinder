@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import HeroSection from '@/components/HeroSection.vue';
+import AboutSection from '@/components/AboutSection.vue';
 
 </script>
 
 <template>
-  <header>
     <HeroSection />
-  </header>
+    <AboutSection />
 </template>

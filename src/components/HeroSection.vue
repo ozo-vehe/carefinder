@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
 import airbnb from '@/assets/images/airbnb.png';
 import google from '@/assets/images/google.png';
 import microsoft from '@/assets/images/microsoft.png';
@@ -12,9 +11,9 @@ interface Sponsor {
 }
 const sponsors : Sponsor[] = [
   {image: airbnb, name: 'airbnb'},
+  {image: hubspot, name: 'hubspot'},
   {image: google, name: 'google'},
   {image: microsoft, name: 'microsoft'},
-  {image: hubspot, name: 'hubspot'},
 ]
 
 let search_keyword = ref(null);
@@ -26,9 +25,9 @@ const handleSearch = () => {
 </script>
 
 <template>
-  <header class="nav_bar px-5 lg:px-20 md:px-16 sm:px-12 min-h-[600px] flex flex-col items-center justify-evenly">
+  <header class="hero px-5 lg:px-20 md:px-16 sm:px-12 min-h-[600px] flex flex-col items-center justify-evenly">
     <div class="header_text flex flex-col gap-2 items-center justify-center">
-      <h1 class="text-[40px] text-slate-800 font-bold capitalize text-center leading-[56px]">Empower Your Health Journey with <br><span class="text-green_v_2">CareFinder</span></h1>
+      <h1 class="text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">Empower Your Health Journey with <br><span class="text-green_v_2">CareFinder</span></h1>
       <p class="text-slate-500 max-w-[450px] text-center">Discover, Export, and Share Hospitals in Your Region. Navigating Wellness Made Simple</p>
     </div>
 
