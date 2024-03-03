@@ -17,7 +17,7 @@ const handleNewsLetter = () => {
     </div>
 
     <form class="flex flex-wrap items-center justify-center gap-4" @submit.prevent="handleNewsLetter">
-      <input class="w-[300px] border border-slate-300 placeholder:text-slate-400 placeholder:text-sm pl-3 py-3 rounded-[8px] outline-none" type="text" placeholder="Enter your email..." v-model="user_email">
+      <input class="w-[300px] border border-slate-300 placeholder:text-slate-400 placeholder:text-sm pl-3 py-3 rounded-[8px] outline-none" type="email" placeholder="Enter your email..." v-model="user_email" required>
       <button type="submit" class="bg-green_v_1/90 px-5 py-3 rounded-[8px] text-slate-100 w-[130px] hover:bg-green_v_1 transition-all duration-300">Submit</button>
     </form>
 
