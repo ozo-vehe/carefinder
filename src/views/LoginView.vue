@@ -19,7 +19,7 @@ const handleGoogleLogin = () => {
         <p class="text-[20px] font-[500]">Continue your journey to accessible healthcare</p>
       </header>
 
-      <form class="mt-8 mb-10 w-[90%]" @submit.prevent="handleLogin">
+      <form class="mt-8 mb-10 w-[100%] lg:w-[90%] md:w-[90%] sm:w-[100%]" @submit.prevent="handleLogin">
         <div class="email mb-4 flex gap-1 flex-col">
           <label for="email">Email</label>
           <input
@@ -46,7 +46,7 @@ const handleGoogleLogin = () => {
 
         <button class="google_login border border-slate-200 w-full flex items-center justify-center gap-4 bg-[#F7FBFF] py-3 rounded-[8px]" @click="handleGoogleLogin">
             <img :src="google_icon" alt="Google icon">
-            <p>Sign in with Google</p>
+            <p>Login with Google</p>
         </button>
       </form>
 
