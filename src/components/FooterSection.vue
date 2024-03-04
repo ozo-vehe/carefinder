@@ -3,14 +3,9 @@ import logo from '@/assets/images/logo.png';
 import instagram from '@/assets/images/instagram.png';
 import dribble from '@/assets/images/dribble.png';
 import x from '@/assets/images/x.png';
-import youtube from  '@/assets/images/youtube.png';
+import youtube from '@/assets/images/youtube.png';
 
-const socials = [
-  instagram,
-  dribble,
-  x,
-  youtube
-];
+const socials = [instagram, dribble, x, youtube];
 </script>
 
 <template>
@@ -57,7 +52,8 @@ const socials = [
     </div>
 
 
-    <div class="copywrite flex gap-5 flex-wrap items-center justify-center lg:justify-between md:justify-between w-full">
+    <div
+      class="copywrite flex gap-5 flex-wrap items-center justify-center lg:justify-between md:justify-between w-full">
       <p class="text-sm text-slate-500">© 2024 CareFinder. All rights reserved</p>
       <div class="footer_socials flex flex-wrap justify-center gap-6">
         <img class="cursor-pointer w-6" v-for="(social, index) in socials" :key="index" :src="social" :alt="social">
