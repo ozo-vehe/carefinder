@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
 import LoginView from '@/views/LoginView.vue';
 import SignupView from '@/views/SignupView.vue';
+import HospitalView from '@/views/HospitalView.vue';
 
 // interface Route {
 //   path: string,
@@ -28,11 +29,15 @@ const router = createRouter({
       name: 'login',
       component: LoginView
     },
-    
     {
       path: '/signup',
       name: 'signup',
       component: SignupView
+    },
+    {
+      path: '/hospitals',
+      name: 'hospitals',
+      component: HospitalView
     }
   ]
 })

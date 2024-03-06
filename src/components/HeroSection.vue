@@ -40,7 +40,7 @@ const handleSearch = () => {
       </div>
 
       <div class="header_search border border-slate-400 bg-white flex items-center justify-between pr-7 h-[50px] gap-2 w-[400px] rounded-full">
-        <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text" v-model.lazy="search_keyword" name="search" id="search" placeholder="Search...">
+        <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text" v-model.lazy="search_keyword" name="search" id="search" placeholder="Enter a location...">
         <img @click="handleSearch" class="w-6 h-6 cursor-pointer" src="https://img.icons8.com/ios/50/search--v1.png" alt="search--v1"/>
       </div>
     </div>
