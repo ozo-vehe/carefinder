@@ -20,7 +20,7 @@ const router = useRouter();
 const userStore = useUsersStore()
 
 // Get the register user function
-const { signUpWithGoogle } = userStore
+const {signUpWithGoogle, signUpWithEmailPassword} = userStore
 
 // Loader instance
 const loading: Ref<boolean> = ref(false);

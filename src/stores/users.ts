@@ -8,30 +8,43 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter();
 
+// User details
 interface User {
-  id: string
-  name: string
-  email: string
+  id: string;
+  fullname: string | null;
+  email: string | null;
+  password: string | null;
 }
 
 export const useUsersStore = defineStore('users', {
   state: () => ({
-    users: [],
+    users: [] as User[],
     loggedIn: false,
     loggedInUser: {}
   }),
   getters: {},
   actions: {
     async fetchUsers() {
-      const users: User[] = []
+      // const users: Array<never> = []
       const querySnapshot = await getDocs(collection(db, 'users'))
+      const users: User[] = [];
+
       querySnapshot.forEach((doc) => {
-        // console.log(doc.id, ' => ', doc.data())
+        const modifiedDocData = {...doc.data()}
 
-        users.push(doc.data() as User)
-      })
+        const user: User = {
+          id: modifiedDocData.id,
+          fullname: modifiedDocData.fullname,
+          email: modifiedDocData.email,
+          password: modifiedDocData.password
+        };
 
-      this.users = users
+        console.log(user);
+
+        users.push(user);
+      });
+
+      this.users = users;
       console.log(this.users)
     },
     async registerUser(user: User) {
@@ -58,7 +71,6 @@ export const useUsersStore = defineStore('users', {
 
         // Check if user is already registered
         const isRegistered = await this.checkIfUserIsRegistered(user.email)
-        console.log(isRegistered)
 
         if (isRegistered) {
           alert(`User with email: ${user.email} has already been used, please login`)
@@ -107,9 +119,8 @@ export const useUsersStore = defineStore('users', {
 
       return user
     },
-    async checkIfUserIsRegistered(email: string) {
+    async checkIfUserIsRegistered(email: string | null) {
       const isRegistered = this.users.find((user) => user.email === email)
-
       return isRegistered ? true : false
     }
   }
