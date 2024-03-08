@@ -3,13 +3,17 @@ import { RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue';
 import FooterSection from './components/FooterSection.vue';
 import { useUsersStore } from './stores/users';
+import { useHospitalsStore } from './stores/hospital';
 import { onBeforeMount } from 'vue';
 
-const usersStore = useUsersStore();
-const { fetchUsers } = usersStore
+const users_store = useUsersStore();
+const hospitals_store = useHospitalsStore();
+const { fetchUsers } = users_store;
+const { getLocation } = hospitals_store;
 
 onBeforeMount(async () => {
   await fetchUsers()
+  await getLocation();
 });
 </script>
 

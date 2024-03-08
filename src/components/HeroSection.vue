@@ -3,23 +3,43 @@ import airbnb from '@/assets/images/airbnb.png';
 import google from '@/assets/images/google.png';
 import microsoft from '@/assets/images/microsoft.png';
 import hubspot from '@/assets/images/hubspot.png';
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
+import { useHospitalsStore } from '@/stores/hospital';
+import { useRouter } from 'vue-router';
+
+const hospitals_store = useHospitalsStore();
+const { searchForHosipitals } = hospitals_store;
 
 interface Sponsor {
   image: any,
   name: string
 }
-const sponsors : Sponsor[] = [
-  {image: airbnb, name: 'airbnb'},
-  {image: hubspot, name: 'hubspot'},
-  {image: google, name: 'google'},
-  {image: microsoft, name: 'microsoft'},
+const sponsors: Sponsor[] = [
+  { image: airbnb, name: 'airbnb' },
+  { image: hubspot, name: 'hubspot' },
+  { image: google, name: 'google' },
+  { image: microsoft, name: 'microsoft' },
 ]
 
-let search_keyword = ref(null);
+let search_keyword: Ref<string | null> = ref(null);
+let loading: Ref<boolean> = ref(false);
+const router = useRouter();
 
-const handleSearch = () => {
-  search_keyword.value && console.log(search_keyword.value);
+const handleSearch = async() => {
+  loading.value = true;
+  if (search_keyword.value) {
+    try{
+      await searchForHosipitals(search_keyword.value)
+      router.push('/hospitals');
+    } catch (error) {
+      console.log(error)
+      alert(`Oops, please try searching again`);
+    }
+    finally {
+      loading.value = false;
+    }
+  }
+  else alert("Enter a search location");
 }
 
 </script>
@@ -27,21 +47,34 @@ const handleSearch = () => {
 <template>
   <header class="hero px-5 lg:px-20 md:px-16 sm:px-12 min-h-[600px] flex flex-col items-center justify-evenly">
     <div class="header_text flex flex-col gap-2 items-center justify-center">
-      <h1 class="text-[40px] lg:text-[48px] md:text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">Empower Your Health Journey with <br><span class="text-green_v_2">CareFinder</span></h1>
-      <p class="text-slate-500 max-w-[450px] text-center">Discover, Export, and Share Hospitals in Your Region. Navigating Wellness Made Simple</p>
+      <h1
+        class="text-[40px] lg:text-[48px] md:text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">
+        Empower Your Health Journey with <br><span class="text-green_v_2">CareFinder</span></h1>
+      <p class="text-slate-500 max-w-[450px] text-center">Discover, Export, and Share Hospitals in Your Region.
+        Navigating Wellness Made Simple</p>
     </div>
 
-    <div class="header_links flex flex-wrap gap-10 items-end lg:justify-between md:justify-center sm:justify-center justify-center w-full">
+    <div
+      class="header_links flex flex-wrap gap-10 items-end lg:justify-between md:justify-center sm:justify-center justify-center w-full">
       <div class="header_sponsors">
-        <h3 class="text-slate-500 mb-4 lg:text-left md:text-left sm:text-center text-center">Trusted by 10+ companies in Nigeria</h3>
+        <h3 class="text-slate-500 mb-4 lg:text-left md:text-left sm:text-center text-center">Trusted by 10+ companies in
+          Nigeria</h3>
         <div class="sponsors flex items-center flex-wrap justify-center gap-6">
-          <img class="w-20 h-fit lg:w-24 md:w-24" v-for="sponsor in sponsors" :key="sponsor.name" :src="sponsor.image" :alt="sponsor.name">
+          <img class="w-20 h-fit lg:w-24 md:w-24" v-for="sponsor in sponsors" :key="sponsor.name" :src="sponsor.image"
+            :alt="sponsor.name">
         </div>
       </div>
 
-      <div class="header_search border border-slate-400 bg-white flex items-center justify-between pr-7 h-[50px] gap-2 w-[400px] rounded-full">
-        <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text" v-model.lazy="search_keyword" name="search" id="search" placeholder="Enter a location...">
-        <img @click="handleSearch" class="w-6 h-6 cursor-pointer" src="https://img.icons8.com/ios/50/search--v1.png" alt="search--v1"/>
+      <div
+        class="header_search border border-slate-400 bg-white flex items-center justify-between pr-7 h-[50px] gap-2 w-[400px] rounded-full">
+        <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text"
+          v-model.lazy="search_keyword" name="search" id="search" placeholder="Enter a location...">
+        <div class="search_imga">
+          <img v-if="loading" class="w-6 h-6 animate-spin"
+            src="https://img.icons8.com/fluency-systems-filled/48/spinner-frame-2.png" alt="spinner-frame-2" />
+          <img v-else @click="handleSearch" class="w-6 h-6 cursor-pointer"
+            src="https://img.icons8.com/ios/50/search--v1.png" alt="search--v1" />
+        </div>
       </div>
     </div>
   </header>

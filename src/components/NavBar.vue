@@ -32,7 +32,9 @@ const { loggedIn } = storeToRefs(userStore);
 
   <nav class="nav_bar px-5 lg:px-20 md:px-16 sm:px-12 pt-12 pb-2 flex items-end justify-between">
     <div class="nav_logo w-[160px] h-[35px]">
-      <img class="w-full h-full object-contain" alt="CareFinder logo" :src="logo" />
+      <RouterLink to="/">
+        <img class="w-full h-full object-contain" alt="CareFinder logo" :src="logo" />
+      </RouterLink>
     </div>
 
     <div class="nav_links lg:flex md:flex sm:hidden hidden gap-10 items-center">

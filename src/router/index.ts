@@ -3,13 +3,9 @@ import HomeView from '../views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
 import LoginView from '@/views/LoginView.vue';
 import SignupView from '@/views/SignupView.vue';
+import HospitalsView from '@/views/HospitalsView.vue';
 import HospitalView from '@/views/HospitalView.vue';
 
-// interface Route {
-//   path: string,
-//   name: string,
-//   component: Component;
-// }
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +33,11 @@ const router = createRouter({
     {
       path: '/hospitals',
       name: 'hospitals',
+      component: HospitalsView
+    },
+    {
+      path: '/hospital/:id',
+      name: 'hospital',
       component: HospitalView
     }
   ]

@@ -44,9 +44,9 @@ const handleCreateUser = async () => {
 
   if (user.email && user.fullname && is_the_same) {
     // Register the user
-    await signUpWithEmailPassword(user);
-    // Redirect to the hospitals page
-    router.push('./hospitals');
+    const isRegistered = await signUpWithEmailPassword(user);
+
+    isRegistered && router.push('./hospitals');
   } else {
     alert("Make sure details are correct");
   }
@@ -58,8 +58,14 @@ const handleGoogleCreateUser = async () => {
   console.log('google login')
   google_loading.value = true;
 
-  await signUpWithGoogle();
-  // Redirect to the hospitals page
+  const isRegistered = await signUpWithGoogle();
+  if (isRegistered) {
+    // Redirect to the hospitals page
+    router.push('/hospitals');
+  } else {
+    alert(`This email address has already been used, please login`);
+    // router.push('/login');
+  }
 
   google_loading.value = false;
 }

@@ -3,17 +3,18 @@ import { db, firebaseAuth } from '@/firebase'
 import { collection, getDocs, setDoc, doc } from 'firebase/firestore'
 import { v4 } from 'uuid'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { useRouter } from 'vue-router'
-
-
-const router = useRouter();
 
 // User details
 interface User {
-  id: string;
-  fullname: string | null;
-  email: string | null;
-  password: string | null;
+  id: string
+  fullname: string | null
+  email: string | null
+  password: string | null
+}
+
+interface LoginDetails {
+  email: string | null
+  password: string | null
 }
 
 export const useUsersStore = defineStore('users', {
@@ -27,31 +28,34 @@ export const useUsersStore = defineStore('users', {
     async fetchUsers() {
       // const users: Array<never> = []
       const querySnapshot = await getDocs(collection(db, 'users'))
-      const users: User[] = [];
+      const users: User[] = []
 
       querySnapshot.forEach((doc) => {
-        const modifiedDocData = {...doc.data()}
+        const modifiedDocData = { ...doc.data() }
 
         const user: User = {
           id: modifiedDocData.id,
           fullname: modifiedDocData.fullname,
           email: modifiedDocData.email,
           password: modifiedDocData.password
-        };
+        }
 
-        console.log(user);
+        console.log(user)
 
-        users.push(user);
-      });
+        users.push(user)
+      })
 
-      this.users = users;
+      this.users = users
       console.log(this.users)
+    },
+    async checkIfUserIsRegistered(email: string | null) {
+      const isRegistered = this.users.find((user) => user.email === email)
+      return isRegistered ? true : false
     },
     async registerUser(user: User) {
       // Add a new document with a generated id.
       try {
-        const firebase_user = await setDoc(doc(db, 'users', user.id), user)
-        console.log(firebase_user)
+        await setDoc(doc(db, 'users', user.id), user)
       } catch (err) {
         console.log(err)
       }
@@ -73,8 +77,7 @@ export const useUsersStore = defineStore('users', {
         const isRegistered = await this.checkIfUserIsRegistered(user.email)
 
         if (isRegistered) {
-          alert(`User with email: ${user.email} has already been used, please login`)
-          router.push('/login')
+          return false
         } else {
           // Save user to the database
           await this.registerUser(user)
@@ -86,9 +89,7 @@ export const useUsersStore = defineStore('users', {
           this.loggedIn = true
           this.loggedInUser = user
 
-          router.push('/hospitals')
-
-          return user
+          return true
         }
       } catch (error: any) {
         // The pending Google credential.
@@ -105,7 +106,7 @@ export const useUsersStore = defineStore('users', {
 
       if (isRegistered) {
         alert(`User with email: ${user.email} has already been used, please login`)
-        return
+        return false
       }
 
       // Save user to the database
@@ -117,11 +118,59 @@ export const useUsersStore = defineStore('users', {
       this.loggedIn = true
       this.loggedInUser = user
 
-      return user
+      return true
     },
-    async checkIfUserIsRegistered(email: string | null) {
-      const isRegistered = this.users.find((user) => user.email === email)
-      return isRegistered ? true : false
+    async loginWithGoogle() {
+      try {
+        const provider = new GoogleAuthProvider()
+        const result = await signInWithPopup(firebaseAuth, provider)
+
+        const loginDetails: LoginDetails = {
+          email: result.user.email,
+          password: ''
+        }
+        // Check if user is already registered
+        const isRegistered = await this.checkIfUserIsRegistered(loginDetails.email)
+
+        if (isRegistered) {
+          // Get user details
+          const user = this.users.find((user) => user.email === loginDetails.email)
+
+          // Save user to local storage for future use in the app
+          localStorage.setItem('user', JSON.stringify(user))
+
+          // Save logged in user to the store
+          this.loggedIn = true
+          this.loggedInUser = result.user
+
+          return true
+        } else {
+          return false
+        }
+      } catch (error: any) {
+        // The pending Google credential.
+        const pendingCred = error.credential
+        console.log(pendingCred)
+      }
+    },
+    async loginWithEmailPassword(loginDetails: LoginDetails) {
+      // Check if user is already registered
+      const isRegistered = await this.checkIfUserIsRegistered(loginDetails.email)
+      // Check if password and email is correct
+      const user = this.users.filter(
+        (user) => user.email === loginDetails.email && user.password === loginDetails.password
+      )
+
+      if (isRegistered && user.length > 0) {
+        // Save user to local storage for future use in the app
+        localStorage.setItem('user', JSON.stringify(user))
+
+        // Save logged in user to the store
+        this.loggedIn = true
+        this.loggedInUser = user
+        return true
+      }
+      return false
     }
   }
 })
