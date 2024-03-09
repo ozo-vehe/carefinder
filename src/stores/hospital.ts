@@ -1,12 +1,13 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 // Hospital details
 interface Hospital {
   id: string
   name: string
-  email: string
   link: string
   location: string
+  longitude: string | number,
+  latitude: string | number
 }
 
 export const useHospitalsStore = defineStore('hospitals', {
@@ -15,7 +16,11 @@ export const useHospitalsStore = defineStore('hospitals', {
     longitude: 0,
     latitude: 0
   }),
-  getters: {},
+  getters: {
+    getHospital: (state): ((id: string) => Hospital | undefined) => (id) => {
+      return state.hospitals.find((hos: Hospital) => hos.id === id)
+    },
+  },
   actions: {
     async fetchHospitals(search: string | null = null) {
       this.hospitals = [];
@@ -53,9 +58,10 @@ export const useHospitalsStore = defineStore('hospitals', {
           const hospital: Hospital = {
             id: result.fsq_id,
             name: result.name,
-            email: result.email,
             link: result.link,
-            location: result.location.formatted_address
+            location: result.location.formatted_address,
+            longitude: result.geocodes.main.longitude,
+            latitude: result.geocodes.main.latitude
           }
           hospitals.push(hospital)
         })
@@ -65,7 +71,7 @@ export const useHospitalsStore = defineStore('hospitals', {
         console.error(err)
       }
     },
-    async searchForHosipitals(search: string | null) {
+    async searchForHospitals(search: string | null) {
       // await this.getLocation(search)
       this.fetchHospitals(search)
     },

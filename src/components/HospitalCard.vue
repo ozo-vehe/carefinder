@@ -6,9 +6,10 @@ import image from '@/assets/images/hospital_01.png';
 interface Hospital {
   id: string;
   name: string;
-  email: string;
   link: string;
   location: string;
+  longitude: string | number;
+  latitude: string | number;
 }
 
 defineProps({

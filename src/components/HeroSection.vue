@@ -8,7 +8,7 @@ import { useHospitalsStore } from '@/stores/hospital';
 import { useRouter } from 'vue-router';
 
 const hospitals_store = useHospitalsStore();
-const { searchForHosipitals } = hospitals_store;
+const { searchForHospitals } = hospitals_store;
 
 interface Sponsor {
   image: any,
@@ -29,9 +29,10 @@ const handleSearch = async() => {
   loading.value = true;
   if (search_keyword.value) {
     try{
-      await searchForHosipitals(search_keyword.value)
+      await searchForHospitals(search_keyword.value)
       router.push('/hospitals');
     } catch (error) {
+      console.log(error)
       console.log(error)
       alert(`Oops, please try searching again`);
     }

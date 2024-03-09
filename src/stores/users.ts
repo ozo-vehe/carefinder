@@ -40,13 +40,10 @@ export const useUsersStore = defineStore('users', {
           password: modifiedDocData.password
         }
 
-        console.log(user)
-
         users.push(user)
       })
 
       this.users = users
-      console.log(this.users)
     },
     async checkIfUserIsRegistered(email: string | null) {
       const isRegistered = this.users.find((user) => user.email === email)
