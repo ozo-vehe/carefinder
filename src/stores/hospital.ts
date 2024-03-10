@@ -14,7 +14,8 @@ export const useHospitalsStore = defineStore('hospitals', {
   state: () => ({
     hospitals: [] as Hospital[],
     longitude: 0,
-    latitude: 0
+    latitude: 0,
+    show_share: false,
   }),
   getters: {
     getHospital: (state): ((id: string) => Hospital | undefined) => (id) => {

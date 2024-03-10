@@ -5,20 +5,23 @@ import { useUsersStore } from '@/stores/users';
 import { useHospitalsStore } from '@/stores/hospital';
 import { storeToRefs } from 'pinia';
 import { onBeforeMount, watch } from 'vue';
+import ShareComponent from '@/components/ShareComponent.vue';
 
 const user_store = useUsersStore();
 const hospital_store = useHospitalsStore();
 
 const { loggedIn } = storeToRefs(user_store);
 const { fetchHospitals } = hospital_store
-const { hospitals, longitude, latitude } = storeToRefs(hospital_store);
+const { hospitals, longitude, latitude, show_share } = storeToRefs(hospital_store);
 
-watch([longitude, latitude], async ([newLon, newLat]) => await fetchHospitals())
+watch([longitude, latitude], async ([newLon, newLat]) => await fetchHospitals());
 
 onBeforeMount(async () => await fetchHospitals())
+
 </script>
 
 <template>
+  <ShareComponent v-if="show_share" :hospitals="hospitals" />
   <HeroSection />
 
   <section class="hospitals bg-white/70 pb-12 px-5 lg:px-20 md:px-16 sm:px-12 gap-12">
@@ -29,14 +32,24 @@ onBeforeMount(async () => await fetchHospitals())
         <p class="text-slate-500">Find the best hospitals in your region</p>
       </div>
 
-      <div v-if="loggedIn">
-        <button
+      <div>
+        <button v-if="loggedIn"
           class="bg-green_v_1 h-[50px] flex items-center justify-center gap-2 text-slate-100 text-sm px-4 rounded-[8px]">
           <div>
             <img class="w-5 h-5" src="https://img.icons8.com/material-rounded/f9f9f9/96/hospital-3.png"
               alt="hospital-3" />
           </div>
           Add new hospital
+        </button>
+        <button
+          class="bg-green_v_1 h-[50px] flex items-center justify-center gap-2 text-slate-100 text-sm px-4 rounded-[8px]"
+          @click="show_share = !show_share">
+          <div>
+            <!-- <img class="w-5 h-5" src="https://img.icons8.com/material-rounded/f9f9f9/96/download--v1.png"
+              alt="download--v1" /> -->
+            <img class="w-5 h-5" src="https://img.icons8.com/material-rounded/f9f9f9/96/share.png" alt="share" />
+          </div>
+          Share
         </button>
       </div>
     </header>
