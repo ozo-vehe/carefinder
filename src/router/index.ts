@@ -5,6 +5,7 @@ import LoginView from '@/views/LoginView.vue';
 import SignupView from '@/views/SignupView.vue';
 import HospitalsView from '@/views/HospitalsView.vue';
 import HospitalView from '@/views/HospitalView.vue';
+import UploadHospitalView from '@/views/UploadHospitalView.vue';
 
 
 const router = createRouter({
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/hospital/:id',
       name: 'hospital',
       component: HospitalView
+    },
+    {
+      path: '/upload',
+      name: 'upload',
+      component: UploadHospitalView
     }
   ]
 })

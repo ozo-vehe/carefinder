@@ -30,14 +30,14 @@ export const useHospitalsStore = defineStore('hospitals', {
         if (search) {
           searchParams = new URLSearchParams({
             near: search,
-            categories: '15014'
-            // sort: 'DISTANCE'
+            categories: '15014',
+            sort: 'DISTANCE'
           })
         } else {
           searchParams = new URLSearchParams({
             ll: `${this.latitude},${this.longitude}`,
-            categories: '15014'
-            // sort: 'DISTANCE'
+            categories: '15014',
+            sort: 'DISTANCE'
           })
         }
         console.log(searchParams)
@@ -45,7 +45,7 @@ export const useHospitalsStore = defineStore('hospitals', {
           method: 'GET',
           headers: {
             Accept: 'application/json',
-            Authorization: 'fsq30mMUwNXDA6UtuxHJnLGvHwaOQa7MleYB6dxnxs1tE6w='
+            Authorization: import.meta.env.VITE_API_KEY as string,
           }
         })
         const data = await results.json()
@@ -99,6 +99,9 @@ export const useHospitalsStore = defineStore('hospitals', {
         }
       )
       // }
+    },
+    async uploadHospital(hospital: Hospital) {
+
     }
   }
 })

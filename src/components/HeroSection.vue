@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import { ref, type Ref } from 'vue';
 import airbnb from '@/assets/images/airbnb.png';
 import google from '@/assets/images/google.png';
 import microsoft from '@/assets/images/microsoft.png';
 import hubspot from '@/assets/images/hubspot.png';
-import { ref, type Ref } from 'vue';
-import { useHospitalsStore } from '@/stores/hospital';
+import { useSearch } from '@/composables/search';
 import { useRouter } from 'vue-router';
-
-const hospitals_store = useHospitalsStore();
-const { searchForHospitals } = hospitals_store;
 
 interface Sponsor {
   image: any,
   name: string
 }
+
+
+let search_keyword: Ref<string | null> = ref(null);
+let loading: Ref<boolean> = ref(false);
+
+const router = useRouter();
+
 const sponsors: Sponsor[] = [
   { image: airbnb, name: 'airbnb' },
   { image: hubspot, name: 'hubspot' },
@@ -21,26 +25,18 @@ const sponsors: Sponsor[] = [
   { image: microsoft, name: 'microsoft' },
 ]
 
-let search_keyword: Ref<string | null> = ref(null);
-let loading: Ref<boolean> = ref(false);
-const router = useRouter();
-
-const handleSearch = async() => {
+const handleSearch = async () => {
   loading.value = true;
-  if (search_keyword.value) {
-    try{
-      await searchForHospitals(search_keyword.value)
-      router.push('/hospitals');
-    } catch (error) {
-      console.log(error)
-      console.log(error)
-      alert(`Oops, please try searching again`);
-    }
-    finally {
-      loading.value = false;
-    }
+  try {
+    const result = await useSearch(search_keyword.value);
+    result ? router.push('/hospitals') : new Error("Falied to search")
+  } catch (error) {
+    console.log(error)
+    alert(`Oops, please try searching again`);
   }
-  else alert("Enter a search location");
+  finally {
+    loading.value = false;
+  }
 }
 
 </script>
@@ -51,12 +47,14 @@ const handleSearch = async() => {
       <h1
         class="text-[40px] lg:text-[48px] md:text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">
         Empower Your Health Journey with <br><span class="text-green_v_2">CareFinder</span></h1>
-      <p class="text-slate-500 max-w-[450px] text-center">Discover, Export, and Share Hospitals in Your Region.
+      <p class="text-slate-500 max-w-[450px] text-center">Discover, Export, and Share Hospitals in Your
+        Region.
         Navigating Wellness Made Simple</p>
     </div>
 
     <div
       class="header_links flex flex-wrap gap-10 items-end lg:justify-between md:justify-center sm:justify-center justify-center w-full">
+
       <div class="header_sponsors">
         <h3 class="text-slate-500 mb-4 lg:text-left md:text-left sm:text-center text-center">Trusted by 10+ companies in
           Nigeria</h3>

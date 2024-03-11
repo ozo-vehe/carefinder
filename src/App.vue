@@ -13,7 +13,7 @@ const { getLocation } = hospitals_store;
 
 onBeforeMount(async () => {
   await fetchUsers()
-  await getLocation();
+  await getLocation()
 });
 </script>
 
