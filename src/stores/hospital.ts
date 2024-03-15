@@ -15,6 +15,9 @@ export const useHospitalsStore = defineStore('hospitals', {
     getHospital: (state): ((id: string) => Hospital | undefined) => (id) => {
       return state.hospitals.find((hos: Hospital) => hos.id === id)
     },
+    getMHospital: (state): ((id: string) => MHospital | undefined) => (id) => {
+      return state.m_hospitals.find((hos: MHospital) => hos.id === id)
+    },
     userHospitals: (state): ((id: string) => Array<MHospital | undefined>) => (id) => {
       console.log(id)
       const hospitals = state.m_hospitals.filter((hos: MHospital) => hos.created_by === id)
