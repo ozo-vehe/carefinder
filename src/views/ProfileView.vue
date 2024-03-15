@@ -35,11 +35,11 @@ const handleLogout = async () => {
 //   hospitals.value = m_hospitals.value.filter((hospital: MHospital) => hospital?.created_by === user_id);
 // }
 const getUserHospitals = (user_id: string) => {
-    const filteredHospitals = m_hospitals.value.filter((hospital: MHospital) => hospital?.created_by === user_id);
-    hospitals.value = filteredHospitals;
-  }
+  const filteredHospitals = m_hospitals.value.filter((hospital: MHospital) => hospital?.created_by === user_id);
+  hospitals.value = filteredHospitals;
+}
 
-watch({ user_id: route.params.user_id}, async (newVal) => {
+watch({ user_id: route.params.user_id }, async (newVal) => {
   getUserHospitals(newVal.user_id as string);
 })
 
@@ -61,7 +61,7 @@ onBeforeMount(async () => {
         @click="handleLogout">
         logout
         <img class="w-7 h-7 p-[6px] bg-green_v_2 rounded-[3px]"
-          src="https://img.icons8.com/ios-glyphs/e9e9e9/90/exit.png" alt="exit" />
+          src="https://img.icons8.com/fluency-systems-filled/e9e9e9/96/exit.png" alt="exit" />
       </button>
     </header>
 

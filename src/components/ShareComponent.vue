@@ -1,8 +1,24 @@
 <script setup lang="ts">
 import Papa from 'papaparse';
 import { useHospitalsStore } from '@/stores/hospital';
+import { ref, type Ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { Hospital } from '@/utils/interface';
+import NavigatorShare from 'vue-navigator-share';
+
+console.log(NavigatorShare);
+
+// const url = window.location.href;
+const title = "hospitals";
+const alt_url: Ref<string> = ref("");
+const show_alt_share: Ref<boolean | null> = ref(false);
+
+const onError = (err: any) => {
+  console.log(err);
+}
+const onSuccess = (succ: any) => {
+  console.log(succ);
+}
 
 defineProps({
   hospitals: {
@@ -22,11 +38,11 @@ const shareHospital = (hospitals: Array<Hospital>) => {
     const csv = Papa.unparse(hospitals);
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
+    // const file = new File([blob], 'hospitals.csv', { type: 'text/csv' });
 
     if (!navigator.canShare) {
-      alert(`Your browser doesn't support the Web Share API.`)
-
-      return;
+      alt_url.value = url;
+      show_alt_share.value = true;
     } else {
       fetch(url)
         .then(response => response.blob())
@@ -63,6 +79,7 @@ const downloadHospitals = async (hospitals: Array<Hospital>) => {
 <template>
   <section v-if="show_share"
     class="share_hospitals fixed flex items-center justify-center top-0 left-0 w-screen h-screen bg-[#3f3f3f44] min-h-[150px] px-5 lg:px-20 md:px-16 sm:px-12">
+    <!-- Normal Sharing Method -->
     <div
       class="share_content bg-white flex flex-col justify-between gap-2 p-5 shadow-[0_0_10px_#4a4a4a] rounded-[8px] relative max-w-[400px]">
       <img class="w-5 h-5 hover:scale-105 transition-all duration-300 absolute right-6 top-6 cursor-pointer"
@@ -89,6 +106,26 @@ const downloadHospitals = async (hospitals: Array<Hospital>) => {
           <img class="w-4 h-4" src="https://img.icons8.com/material-rounded/f9f9f9/96/download--v1.png"
             alt="download--v1" />
           Download
+        </button>
+      </div>
+    </div>
+
+    <!-- Alternative Sharing Method -->
+    <div
+      v-if="show_alt_share"
+      class="navigation_share_alt absolute z-10 top-[40%] -translate-y-[50%] bg-white flex flex-col justify-between gap-2 p-5 shadow-[0_0_10px_#4a4a4a] rounded-[8px] max-w-[400px]">
+      <div class="w-full mb-4 flex items-start justify-between gap-4">
+        <h3 class="w-full text-left">Your browser doesn't support the Web Share API.</h3>
+        <img class="w-5 h-5 hover:scale-105 transition-all duration-300 cursor-pointer"
+        src="https://img.icons8.com/pastel-glyph/64/cancel--v1.png" alt="cancel--v1"
+        @click="show_alt_share = !show_alt_share" />
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button
+          class="rounded-[3px] flex items-center justify-center gap-2 px-3 py-2 min-w-[120px] bg-green_v_1 text-slate-100">
+          <img class="w-4 h-4" src="https://img.icons8.com/material-rounded/f9f9f9/96/share.png" alt="share" />
+          <navigator-share :on-error="onError" :on-success="onSuccess" :url="alt_url" :title="title" text="hospital.csv"></navigator-share>
         </button>
       </div>
     </div>

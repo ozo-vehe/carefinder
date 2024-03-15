@@ -25,6 +25,7 @@
     "pinia": "^2.1.7",
     "uuid": "^9.0.1",
     "vue": "^3.4.15",
+    "vue-navigator-share": "^1.0.3",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
