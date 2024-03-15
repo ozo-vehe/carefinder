@@ -2,16 +2,7 @@
 import Papa from 'papaparse';
 import { useHospitalsStore } from '@/stores/hospital';
 import { storeToRefs } from 'pinia';
-
-// Hospital details
-interface Hospital {
-  id: string
-  name: string
-  link: string
-  location: string
-  longitude: string | number,
-  latitude: string | number
-}
+import type { Hospital } from '@/utils/interface';
 
 defineProps({
   hospitals: {
@@ -24,31 +15,40 @@ const hospitals_store = useHospitalsStore();
 const { show_share } = storeToRefs(hospitals_store);
 
 const shareHospital = (hospitals: Array<Hospital>) => {
-  const csv = Papa.unparse(hospitals);
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = window.URL.createObjectURL(blob);
-
-  if (!navigator.canShare) {
-    alert(`Your browser doesn't support the Web Share API.`)
+  if (hospitals.length < 1) {
+    alert("No hospital list to share");
     return;
   } else {
-    fetch(url)
-      .then(response => response.blob())
-      .then(blob => {
-        // Convert the Blob to a file
-        const file = new File([blob], 'hospitals.csv', { type: 'text/csv' });
-        // Access the converted file object
-        try {
-          navigator.share({ files: [file], title: "Files", text: "hospitals.csv shared successfully" });
-          alert("successfully shared");
-        } catch (err) {
-          alert(`Error: ${err}`);
-        }
-      });
+    const csv = Papa.unparse(hospitals);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+
+    if (!navigator.canShare) {
+      alert(`Your browser doesn't support the Web Share API.`)
+
+      return;
+    } else {
+      fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+          // Convert the Blob to a file
+          const file = new File([blob], 'hospitals.csv', { type: 'text/csv' });
+          // Access the converted file object
+          try {
+            navigator.share({ files: [file], title: "Files", text: "hospitals.csv shared successfully" });
+          } catch (err) {
+            alert(`Error: ${err}`);
+          }
+        });
+    }
   }
 }
 
 const downloadHospitals = async (hospitals: Array<Hospital>) => {
+  if (hospitals.length < 1) {
+    alert("No hospital list to download");
+    return;
+  }
   const csv = Papa.unparse(hospitals);
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = window.URL.createObjectURL(blob);
@@ -62,8 +62,9 @@ const downloadHospitals = async (hospitals: Array<Hospital>) => {
 
 <template>
   <section v-if="show_share"
-    class="share_hospitals fixed flex items-center justify-center top-0 left-0 w-screen h-screen bg-[#3f3f3f44] min-h-[150px]">
-    <div class="share_content bg-white flex flex-col justify-between gap-2 p-5 shadow-[0_0_10px_#4a4a4a] rounded-[8px] relative max-w-[400px]">
+    class="share_hospitals fixed flex items-center justify-center top-0 left-0 w-screen h-screen bg-[#3f3f3f44] min-h-[150px] px-5 lg:px-20 md:px-16 sm:px-12">
+    <div
+      class="share_content bg-white flex flex-col justify-between gap-2 p-5 shadow-[0_0_10px_#4a4a4a] rounded-[8px] relative max-w-[400px]">
       <img class="w-5 h-5 hover:scale-105 transition-all duration-300 absolute right-6 top-6 cursor-pointer"
         src="https://img.icons8.com/pastel-glyph/64/cancel--v1.png" alt="cancel--v1"
         @click="show_share = !show_share" />

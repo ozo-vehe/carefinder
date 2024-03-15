@@ -6,6 +6,7 @@ import SignupView from '@/views/SignupView.vue';
 import HospitalsView from '@/views/HospitalsView.vue';
 import HospitalView from '@/views/HospitalView.vue';
 import UploadHospitalView from '@/views/UploadHospitalView.vue';
+import ProfileView from '@/views/ProfileView.vue';
 
 
 const router = createRouter({
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/upload',
       name: 'upload',
       component: UploadHospitalView
+    },
+    {
+      path: '/profile/:user_id',
+      name: 'profile',
+      component: ProfileView
     }
   ]
 })

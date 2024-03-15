@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { db, firebaseAuth } from '@/firebase'
+import { db, firebaseAuth } from '@/utils/firebase'
 import { collection, getDocs, setDoc, doc } from 'firebase/firestore'
-import { v4 } from 'uuid'
+import { v4 } from 'uuid';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
 // User details
@@ -21,9 +21,10 @@ export const useUsersStore = defineStore('users', {
   state: () => ({
     users: [] as User[],
     loggedIn: false,
-    loggedInUser: {}
+    loggedInUser: {} as User
   }),
-  getters: {},
+  getters: {
+  },
   actions: {
     async fetchUsers() {
       // const users: Array<never> = []
@@ -138,7 +139,7 @@ export const useUsersStore = defineStore('users', {
 
           // Save logged in user to the store
           this.loggedIn = true
-          this.loggedInUser = result.user
+          this.loggedInUser = user as User
 
           return true
         } else {
@@ -154,20 +155,36 @@ export const useUsersStore = defineStore('users', {
       // Check if user is already registered
       const isRegistered = await this.checkIfUserIsRegistered(loginDetails.email)
       // Check if password and email is correct
-      const user = this.users.filter(
+      const user = this.users.find(
         (user) => user.email === loginDetails.email && user.password === loginDetails.password
       )
 
-      if (isRegistered && user.length > 0) {
+      if (isRegistered && user) {
         // Save user to local storage for future use in the app
         localStorage.setItem('user', JSON.stringify(user))
 
         // Save logged in user to the store
-        this.loggedIn = true
-        this.loggedInUser = user
+        this.loggedIn = true;
+        this.loggedInUser = user as User;
         return true
       }
       return false
+    },
+    async getSavedUserFromLocalStorage() {
+      const user = localStorage.getItem('user')
+
+      if (user) {
+        this.loggedIn = true
+        this.loggedInUser = JSON.parse(user)
+      }
+    },
+    async userLogout() {
+      if(this.loggedInUser) {
+        this.loggedInUser = {} as User;
+        this.loggedIn = false;
+        localStorage.clear();
+        return true;
+      } else return false;
     }
   }
 })

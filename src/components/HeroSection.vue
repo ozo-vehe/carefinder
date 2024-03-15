@@ -4,6 +4,7 @@ import airbnb from '@/assets/images/airbnb.png';
 import google from '@/assets/images/google.png';
 import microsoft from '@/assets/images/microsoft.png';
 import hubspot from '@/assets/images/hubspot.png';
+import altschool from '@/assets/images/altschool.webp';
 import { useSearch } from '@/composables/search';
 import { useRouter } from 'vue-router';
 
@@ -19,10 +20,11 @@ let loading: Ref<boolean> = ref(false);
 const router = useRouter();
 
 const sponsors: Sponsor[] = [
-  { image: airbnb, name: 'airbnb' },
-  { image: hubspot, name: 'hubspot' },
-  { image: google, name: 'google' },
-  { image: microsoft, name: 'microsoft' },
+  // { image: airbnb, name: 'airbnb' },
+  // { image: hubspot, name: 'hubspot' },
+  // { image: google, name: 'google' },
+  // { image: microsoft, name: 'microsoft' },
+  { image: altschool, name: 'altschool' }
 ]
 
 const handleSearch = async () => {
@@ -56,8 +58,7 @@ const handleSearch = async () => {
       class="header_links flex flex-wrap gap-10 items-end lg:justify-between md:justify-center sm:justify-center justify-center w-full">
 
       <div class="header_sponsors">
-        <h3 class="text-slate-500 mb-4 lg:text-left md:text-left sm:text-center text-center">Trusted by 10+ companies in
-          Nigeria</h3>
+        <h3 class="text-slate-500 mb-4 lg:text-left md:text-left sm:text-center text-center">Trusted by </h3>
         <div class="sponsors flex items-center flex-wrap justify-center gap-6">
           <img class="w-20 h-fit lg:w-24 md:w-24" v-for="sponsor in sponsors" :key="sponsor.name" :src="sponsor.image"
             :alt="sponsor.name">

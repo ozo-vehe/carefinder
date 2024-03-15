@@ -146,7 +146,4 @@ const handleGoogleCreateUser = async () => {
 </template>
 
 <style>
-section {
-  /* color:  #f1f5f9 */
-}
 </style>

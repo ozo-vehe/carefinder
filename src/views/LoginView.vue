@@ -103,7 +103,7 @@ const handleGoogleLogin = async () => {
 
         <div v-else class="flex items-center justify-center gap-4">
           <img :src="google_icon" alt="Google icon">
-          <p>Sign up with Google</p>
+          <p>Login with Google</p>
         </div>
       </button>
 

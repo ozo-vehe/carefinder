@@ -1,18 +1,12 @@
 import { defineStore } from 'pinia';
-
-// Hospital details
-interface Hospital {
-  id: string
-  name: string
-  link: string
-  location: string
-  longitude: string | number,
-  latitude: string | number
-}
+import { v4 } from 'uuid';
+import { getSavedHospitalsFromFirestore, saveHospitalToFirestore } from '@/utils/firestore_db';
+import type {Hospital, MHospital} from '@/utils/interface';
 
 export const useHospitalsStore = defineStore('hospitals', {
   state: () => ({
     hospitals: [] as Hospital[],
+    m_hospitals: [] as MHospital[],
     longitude: 0,
     latitude: 0,
     show_share: false,
@@ -21,6 +15,12 @@ export const useHospitalsStore = defineStore('hospitals', {
     getHospital: (state): ((id: string) => Hospital | undefined) => (id) => {
       return state.hospitals.find((hos: Hospital) => hos.id === id)
     },
+    userHospitals: (state): ((id: string) => Array<MHospital | undefined>) => (id) => {
+      console.log(id)
+      const hospitals = state.m_hospitals.filter((hos: MHospital) => hos.created_by === id)
+      console.log(hospitals)
+      return hospitals;
+    }
   },
   actions: {
     async fetchHospitals(search: string | null = null) {
@@ -59,17 +59,20 @@ export const useHospitalsStore = defineStore('hospitals', {
           const hospital: Hospital = {
             id: result.fsq_id,
             name: result.name,
+            image: result.image,
+            email: result.contact?.email,
             link: result.link,
-            location: result.location.formatted_address,
+            address: result.location.formatted_address,
             longitude: result.geocodes.main.longitude,
-            latitude: result.geocodes.main.latitude
+            latitude: result.geocodes.main.latitude,
           }
           hospitals.push(hospital)
         })
 
         this.hospitals = hospitals
-      } catch (err) {
+      } catch (err: any) {
         console.error(err)
+        return {stats: "error", error: err};
       }
     },
     async searchForHospitals(search: string | null) {
@@ -100,8 +103,29 @@ export const useHospitalsStore = defineStore('hospitals', {
       )
       // }
     },
-    async uploadHospital(hospital: Hospital) {
+    async uploadHospital(hospital: any) {
+      console.log(hospital);
+      const id = v4();
+      hospital.id = id;
 
+      if (hospital.markdown) {
+        console.log(hospital);
+        await saveHospitalToFirestore(hospital, hospital.id);
+        const m_hospitals = await getSavedHospitalsFromFirestore();
+        
+        if (m_hospitals) {
+          this.m_hospitals = m_hospitals as { id: string; content: string; markdown: boolean; created_by: string }[];
+        }
+      } else {
+        console.log(hospital);
+      }
+      return true
+    },
+    async getSavedHospitals() {
+      const m_hospitals = await getSavedHospitalsFromFirestore();
+      if (m_hospitals) {
+        this.m_hospitals = m_hospitals as { id: string; content: string; markdown: boolean; created_by: string }[];
+      }
     }
   }
 })
