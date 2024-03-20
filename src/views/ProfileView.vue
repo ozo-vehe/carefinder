@@ -31,10 +31,9 @@ const handleLogout = async () => {
   loading.value = false;
 }
 
-// const getUserHospitals = async (user_id: string) => {
-//   hospitals.value = m_hospitals.value.filter((hospital: MHospital) => hospital?.created_by === user_id);
-// }
+
 const getUserHospitals = (user_id: string) => {
+  console.log("Getting Hospirals");
   const filteredHospitals = m_hospitals.value.filter((hospital: MHospital) => hospital?.created_by === user_id);
   hospitals.value = filteredHospitals;
 }
@@ -53,11 +52,11 @@ onBeforeMount(async () => {
 <template>
   <section class="hospital bg-white/90 pb-12">
     <header class="w-full relative h-[300px] py-12 px-5 lg:px-20 md:px-16 sm:px-12">
-      <img class="absolute left-20 -bottom-10 bg-green_v_1 w-20 h-20 p-4 object-cover shadow-md rounded-full"
+      <img class="absolute left-5 lg:left-20 md:left-16 sm:left-12 -bottom-10 bg-green_v_1 w-20 h-20 p-4 object-cover shadow-md rounded-full"
         src="https://img.icons8.com/ios-glyphs/ffffff/90/user--v1.png" alt="user--v1" />
 
       <button
-        class="absolute right-20 -bottom-6 flex items-center justify-center gap-4 shadow-lg bg-green_v_1 text-slate-100 px-4 min-w-[130px] capitalize rounded-[8px] h-[45px]"
+        class="absolute right-5 lg:right-20 md:right-16 sm:right-12 -bottom-6 flex items-center justify-center gap-4 shadow-lg bg-green_v_1 text-slate-100 px-4 min-w-[130px] capitalize rounded-[8px] h-[45px]"
         @click="handleLogout">
         logout
         <img class="w-7 h-7 p-[6px] bg-green_v_2 rounded-[3px]"
@@ -75,7 +74,7 @@ onBeforeMount(async () => {
     <div class="created_hospitals mt-16 pt-4 px-5 lg:px-20 md:px-16 sm:px-12">
       <h2 class="text-[32px] font-bold text-center mb-4">Created Hospitals</h2>
       <div class="hospital_container flex flex-wrap items-center justify-center gap-8 mb-10">
-        <template v-if="hospitals.length > 0">
+        <template v-if="hospitals && hospitals.length > 0">
           <HospitalCard :markdown="true" :hospital="undefined" :m_hospital="hospital" v-for="hospital in hospitals"
             :key="hospital?.id" />
         </template>
