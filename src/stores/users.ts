@@ -54,6 +54,11 @@ export const useUsersStore = defineStore('users', {
       // Add a new document with a generated id.
       try {
         await setDoc(doc(db, 'users', user.id), user)
+        await this.fetchUsers();
+
+        
+        // Save user to local storage for future use in the app
+        localStorage.setItem('user', JSON.stringify(user))
       } catch (err) {
         console.log(err)
       }
@@ -80,8 +85,6 @@ export const useUsersStore = defineStore('users', {
           // Save user to the database
           await this.registerUser(user)
 
-          // Save user to local storage for future use in the app
-          localStorage.setItem('user', JSON.stringify(user))
 
           // Save logged in user to the store
           this.loggedIn = true
@@ -109,8 +112,6 @@ export const useUsersStore = defineStore('users', {
 
       // Save user to the database
       await this.registerUser(user)
-      // Save user to local storage for future use in the app
-      localStorage.setItem('user', JSON.stringify(user))
 
       // Save logged in user to the store
       this.loggedIn = true

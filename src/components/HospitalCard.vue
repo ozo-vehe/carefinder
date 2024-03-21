@@ -2,7 +2,6 @@
 import type { PropType } from 'vue';
 import image from '@/assets/images/hospital_01.png';
 import type { Hospital, MHospital } from '@/utils/interface';
-import { MdPreview } from 'md-editor-v3';
 import MarkdownRenderer from './MarkdownRenderer.vue';
 import 'md-editor-v3/lib/style.css';
 

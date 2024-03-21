@@ -4,7 +4,6 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import L from 'leaflet';
 import type { MHospital, Hospital } from '@/utils/interface';
-import MarkdownRenderer from '@/components/MarkdownRenderer.vue';
 import { MdPreview } from 'md-editor-v3';
 import 'md-editor-v3/lib/style.css';
 
@@ -34,7 +33,6 @@ const { params } = route;
 
 const hospital: Ref<Hospital | any> = ref();
 const m_hospital: Ref<MHospital | any> = ref();
-const loading: Ref<boolean> = ref(false);
 
 onMounted(async () => {
   console.log(params)
