@@ -2,7 +2,7 @@
 import { useUsersStore } from '@/stores/users';
 import { useHospitalsStore } from '@/stores/hospital';
 import HospitalCard from '@/components/HospitalCard.vue';
-import { onBeforeMount, type Ref, ref, watch } from 'vue';
+import { onMounted, type Ref, ref, watch } from 'vue';
 import type { MHospital } from '@/utils/interface';
 import { useRouter, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
@@ -24,7 +24,7 @@ const handleLogout = async () => {
   console.log("clicked")
   try {
     const loggedOut = await userLogout();
-    loggedOut ? router.push("/") : alert("User not signed in...");
+    loggedOut ? router.push("/login") : alert("User not signed in...");
   } catch (error) {
     console.log(error)
   }
@@ -33,8 +33,12 @@ const handleLogout = async () => {
 
 
 const getUserHospitals = (user_id: string) => {
-  console.log("Getting Hospirals");
-  const filteredHospitals = m_hospitals.value.filter((hospital: MHospital) => hospital?.created_by === user_id);
+  console.log("Getting Hospitals");
+  let filteredHospitals: any = []
+  m_hospitals?.value.forEach((hospital: MHospital) => {
+    hospital.created_by === user_id && filteredHospitals.push(hospital);
+  });
+
   hospitals.value = filteredHospitals;
 }
 
@@ -42,7 +46,7 @@ watch({ user_id: route.params.user_id }, async (newVal) => {
   getUserHospitals(newVal.user_id as string);
 })
 
-onBeforeMount(async () => {
+onMounted(async () => {
   console.log("Before mount")
   getUserHospitals(route.params.user_id as string);
 })

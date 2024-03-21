@@ -9,6 +9,7 @@ export const useHospitalsStore = defineStore('hospitals', {
     m_hospitals: [] as MHospital[],
     longitude: 0,
     latitude: 0,
+    get_location: {status: "", location: false} as {status: string, location: boolean},
     show_share: false,
   }),
   getters: {
@@ -28,6 +29,11 @@ export const useHospitalsStore = defineStore('hospitals', {
   actions: {
     async fetchHospitals(search: string | null = null) {
       this.hospitals = [];
+      // const hospitals = sessionStorage.getItem('hospitals');
+      // if (hospitals) {
+      //   this.hospitals = JSON.parse(hospitals) as Hospital[];
+      //   return;
+      // }
       try {
         let searchParams
         if (search) {
@@ -37,6 +43,7 @@ export const useHospitalsStore = defineStore('hospitals', {
             sort: 'DISTANCE'
           })
         } else {
+          console.log(this.latitude, this.longitude);
           searchParams = new URLSearchParams({
             ll: `${this.latitude},${this.longitude}`,
             categories: '15014',
@@ -48,11 +55,15 @@ export const useHospitalsStore = defineStore('hospitals', {
           method: 'GET',
           headers: {
             Accept: 'application/json',
-            Authorization: import.meta.env.VITE_API_KEY as string,
+            Authorization: import.meta.env.VITE_FOURSQUARE_API_KEY as string,
           }
         })
+        console.log(results)
         const data = await results.json()
         console.log(data)
+
+        // Change this to a more specific error handling
+        if(data.results.length > 0) this.get_location = {status: "success", location: true};
         
         this.latitude = data.context.geo_bounds.circle.center.latitude;
         this.longitude = data.context.geo_bounds.circle.center.longitude;
@@ -70,6 +81,7 @@ export const useHospitalsStore = defineStore('hospitals', {
             latitude: result.geocodes.main.latitude,
           }
           hospitals.push(hospital)
+          sessionStorage.setItem('hospitals', JSON.stringify(hospitals));
         })
 
         this.hospitals = hospitals
@@ -95,13 +107,13 @@ export const useHospitalsStore = defineStore('hospitals', {
       // } else {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          this.get_location = {status: "success" , location: true};
           this.longitude = position.coords.longitude
           this.latitude = position.coords.latitude
-
-          console.log(this.longitude, this.latitude)
         },
         (error) => {
           console.log(error.message)
+          this.get_location = {status: error.message, location: false};
         }
       )
       // }

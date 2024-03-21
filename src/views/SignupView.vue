@@ -25,24 +25,26 @@ const {signUpWithGoogle, signUpWithEmailPassword} = userStore
 // Loader instance
 const loading: Ref<boolean> = ref(false);
 const google_loading: Ref<boolean> = ref(false);
-
+// Is password the same
+const is_the_same: Ref<boolean> = ref(false);
+  
 // Confirm password
 const c_password: Ref<string> = ref('');
 
 const user: User = reactive({
   id: '',
-  fullname: null,
-  email: null,
-  password: null
+  fullname: '',
+  email: '',
+  password: ''
 });
 
 const handleCreateUser = async () => {
   loading.value = true;
   // Check if the passwords are the same
-  const is_the_same = user.password === c_password.value;
+  is_the_same.value = user.password === c_password.value && user.password.length > 7;
   // const user_exist = user.email === saved_user.email
 
-  if (user.email && user.fullname && is_the_same) {
+  if (user.email && user.fullname && is_the_same.value) {
     // Register the user
     const isRegistered = await signUpWithEmailPassword(user);
 
@@ -98,14 +100,16 @@ const handleGoogleCreateUser = async () => {
           <label for="password">Password</label>
           <input
             class="bg-[#F7FBFF] border border-slate-200 py-4 pl-4 rounded-[8px] placeholder:text-sm text-slate-800 outline-none"
-            type="password" id="password" placeholder="At least 8 characters" required v-model.lazy="user.password" />
+            type="password" id="password" placeholder="At least 8 characters" required v-model="user.password" />
         </div>
 
         <div class="password mb-4 flex gap-1 flex-col">
           <label for="c_password">Confirm Password</label>
           <input
             class="bg-[#F7FBFF] border border-slate-200 py-4 pl-4 rounded-[8px] placeholder:text-sm text-slate-800 outline-none"
-            type="password" id="c_password" placeholder="At least 8 characters" required v-model.lazy="c_password" />
+            type="password" id="c_password" placeholder="At least 8 characters" required v-model="c_password" />
+          <p v-if="c_password !== user.password" class="text-red-400 text-[12px] -mt-1 ml-1">Not the same</p>
+          <p v-if="c_password !== '' && c_password.length < 7" class="text-red-400 text-[12px] -mt-1 ml-1">Password should be 8 characters or more</p>
         </div>
 
         <button

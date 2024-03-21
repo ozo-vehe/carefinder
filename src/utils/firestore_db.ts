@@ -16,7 +16,8 @@ export const saveHospitalToFirestore = async (hospital: Object, id: string) => {
 export const getSavedHospitalsFromFirestore = async () => {
   try {
     console.log("Getting hospitals...")
-    const getSignedInUser: User | null = JSON.parse(localStorage.getItem('user') ?? "");
+    const user_storage = localStorage.getItem("user")
+    const getSignedInUser: User | null = user_storage ? JSON.parse(user_storage) : null;
     
     const data: Array<MHospital | undefined> = []
     const querySnapshot = await getDocs(collection(db, 'hospitals'))

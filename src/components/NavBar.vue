@@ -23,21 +23,21 @@ const { loggedIn, loggedInUser } = storeToRefs(userStore);
         :class="{ 'text-[#000]': $route.path === '/hospitals', 'text-[#969696]': $route.path !== '/hospitals' }" @click="show_menu = !show_menu">Hospitals</router-link>
 
       <RouterLink :to="{ name: 'profile', params: { user_id: loggedInUser.id } }" v-if="loggedIn"
-        class="user_profile bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] px-3 h-[50px] rounded-[8px] flex gap-4 items-center justify-center capitalize" @click="show_menu = !show_menu">
+        class="user_profile bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] px-4 h-[50px] rounded-[8px] flex gap-4 items-center justify-center capitalize" @click="show_menu = !show_menu">
         <img class="w-10 h-10 p-[6px] object-cover border-2 border-green_v_2/70 rounded-full"
           src="https://img.icons8.com/ios-glyphs/ffffff/60/user--v1.png" alt="user--v1" />
         <div class="flex items-center justify-center gap-2">
           <p>{{ loggedInUser.fullname }}</p>
-          <img class="cursor-pointer w-7 h-7 bg-green_v_2 p-[6px] rounded-[3px]"
-            src="https://img.icons8.com/ios-glyphs/fafafa/60/chevron-down.png" alt="right--v2" />
+          <!-- <img class="cursor-pointer w-7 h-7 bg-green_v_2 p-[6px] rounded-[3px]"
+            src="https://img.icons8.com/ios-glyphs/fafafa/60/chevron-down.png" alt="right--v2" /> -->
         </div>
       </RouterLink>
 
       <router-link to="/login" v-else
-        class="nav_link bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] pl-7 pr-3 rounded-[8px] flex gap-4 items-center justify-between capitalize" @click="show_menu = !show_menu">
+        class="nav_link bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] px-4 rounded-[8px] flex gap-4 items-center justify-between capitalize" @click="show_menu = !show_menu">
         <span>get started</span>
-        <img class="w-8 h-8 bg-green_v_2 p-[6px] rounded-[3px]"
-          src="https://img.icons8.com/material-sharp/fafafa/right--v2.png" alt="right--v2" />
+        <!-- <img class="w-8 h-8 bg-green_v_2 p-[6px] rounded-[3px]"
+          src="https://img.icons8.com/material-sharp/fafafa/right--v2.png" alt="right--v2" /> -->
       </router-link>
     </div>
   </div>
@@ -58,21 +58,21 @@ const { loggedIn, loggedInUser } = storeToRefs(userStore);
         :class="{ 'text-[#000]': $route.path === '/hospitals', 'text-[#969696]': $route.path !== '/hospitals' }">Hospitals</router-link>
 
       <RouterLink :to="{ name: 'profile', params: { user_id: loggedInUser.id } }" v-if="loggedIn"
-        class="user_profile bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] px-3 h-[50px] rounded-[8px] flex gap-4 items-center justify-center capitalize">
+        class="user_profile bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] px-4 h-[50px] rounded-[8px] flex gap-4 items-center justify-center capitalize">
         <img class="w-10 h-10 p-[6px] object-cover border-2 border-green_v_2/70 rounded-full"
           src="https://img.icons8.com/ios-glyphs/ffffff/60/user--v1.png" alt="user--v1" />
         <div class="flex items-center justify-center gap-2">
           <p>{{ loggedInUser.fullname }}</p>
-          <img class="cursor-pointer w-7 h-7 bg-green_v_2 p-[6px] rounded-[3px]"
-            src="https://img.icons8.com/ios-glyphs/fafafa/60/chevron-down.png" alt="right--v2" />
+          <!-- <img class="cursor-pointer w-7 h-7 bg-green_v_2 p-[6px] rounded-[3px]"
+            src="https://img.icons8.com/ios-glyphs/fafafa/60/chevron-down.png" alt="right--v2" /> -->
         </div>
       </RouterLink>
 
       <router-link to="/login" v-else
-        class="nav_link bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] pl-7 pr-3 rounded-[8px] flex gap-4 items-center justify-between capitalize">
+        class="nav_link bg-green_v_1 min-w-[100px] text-[#fff] py-[10px] px-4 rounded-[8px] flex gap-4 items-center justify-between capitalize">
         <span>get started</span>
-        <img class="w-8 h-8 bg-green_v_2 p-[6px] rounded-[3px]"
-          src="https://img.icons8.com/material-sharp/fafafa/right--v2.png" alt="right--v2" />
+        <!-- <img class="w-8 h-8 bg-green_v_2 p-[6px] rounded-[3px]"
+          src="https://img.icons8.com/material-sharp/fafafa/right--v2.png" alt="right--v2" /> -->
       </router-link>
     </div>
 

@@ -42,7 +42,6 @@ defineProps({
     </div>
 
     <div class="hospital_data mt-5">
-      <!-- <MdPreview :modelValue="m_hospital?.content" /> -->
       <MarkdownRenderer :source="m_hospital?.content" />
     </div>
   </RouterLink>

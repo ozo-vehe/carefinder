@@ -77,7 +77,7 @@ onBeforeMount(async () => {
 //     console.log(service);
 //     service.nearbySearch({
 //       location: place.geometry.location,
-//       radius: '500',
+//       radius: '1000',
 //       type: ['hospital']
 //     }, (result: any, status: any) => {
 //       if (status == google.maps.places.PlacesServiceStatus.OK) {

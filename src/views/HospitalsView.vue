@@ -20,7 +20,7 @@ let error_message: Ref<string> = ref("");
 
 const { loggedIn } = storeToRefs(user_store);
 const { fetchHospitals } = hospital_store
-const { hospitals, longitude, latitude, show_share } = storeToRefs(hospital_store);
+const { hospitals, longitude, latitude, show_share, get_location } = storeToRefs(hospital_store);
 
 watch([longitude, latitude], async ([newLon, newLat]) => await fetchHospitals());
 
@@ -43,6 +43,7 @@ const handleSearch = async () => {
 onBeforeMount(async () => {
   const status = await fetchHospitals();
   if(status?.stats === "error") {
+    console.log("error")
     is_error.value = true;
     error_message.value = status.error;
     // alert(status.error);
@@ -107,11 +108,15 @@ onBeforeMount(async () => {
     </header>
 
     <section class="hospital_container flex flex-wrap items-center justify-center gap-8">
-      <template v-if="hospitals.length > 0 && !is_error">
+      
+      <p v-if="!get_location.location && get_location.status !== ''" class="text-red-600 bg-red-200 px-4 py-2 rounded-[8px] min-w-[300px] text-center">{{ get_location.status }}, use the search bar to get list of hospitals close to you...</p>
+      <template v-else-if="hospitals.length > 0 && !is_error">
         <HospitalCard :markdown="false" :m_hospital="undefined" :hospital="hospital" v-for="hospital in hospitals" :key="hospital.id" />
       </template>
-      <img v-else-if="hospitals.length < 1 && !is_error" class="w-6 h-6 animate-spin"
+      <template v-else-if="hospitals.length < 1 && !is_error">
+      <img class="w-6 h-6 animate-spin"
         src="https://img.icons8.com/fluency-systems-filled/48/spinner-frame-2.png" alt="spinner-frame-2" />
+      </template>
       <p v-else class="text-red-600 bg-red-200 px-4 py-2 rounded-[8px] min-w-[300px] text-center">{{ error_message }}, please try again another time...</p>
     </section>
   </section>
