@@ -19,8 +19,8 @@ describe('Get hospitals from foursquare', () => {
 
   it('should return an array hospitals in Kaduna', async () => {
     const hospital_store = useHospitalsStore()
-    const hospitals = await hospital_store.fetchHospitals('Kaduna, Nigeria')
-    expect(hospitals.length).toBeGreaterThan(0)
+    await hospital_store.fetchHospitals('Kaduna, Nigeria')
+    expect(hospital_store.hospitals.length).toBeGreaterThan(0)
   })
 })
 
