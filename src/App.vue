@@ -4,12 +4,14 @@ import NavBar from './components/NavBar.vue';
 import FooterSection from './components/FooterSection.vue';
 import { useUsersStore } from './stores/users';
 import { useHospitalsStore } from './stores/hospital';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 
 const users_store = useUsersStore();
 const hospitals_store = useHospitalsStore();
 const { fetchUsers, getSavedUserFromLocalStorage } = users_store;
 const { getLocation, getSavedHospitals } = hospitals_store;
+
+let id: any;
 
 onBeforeMount(async () => {
   await fetchUsers()
@@ -17,6 +19,20 @@ onBeforeMount(async () => {
   await getSavedUserFromLocalStorage();
   await getSavedHospitals();
 });
+const success = () => {
+  console.log("success");
+}
+const error = () => {
+  console.log("error");
+}
+
+const options = {
+  enableHighAccuracy: false,
+  timeout: 5000,
+  maximumAge: 0,
+};
+
+id = navigator.geolocation.watchPosition(success, error)
 // const places = ref([]);
 // const lat = ref(7.464557);
 // const lng = ref(9.031044);
@@ -103,7 +119,7 @@ onBeforeMount(async () => {
     </div>
   </div>
   <input @focus="autoComplete" type="text" id="searchTextField"> -->
-    <RouterView />
+  <RouterView />
   <FooterSection />
 </template>
 

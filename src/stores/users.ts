@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { db, firebaseAuth } from '@/utils/firebase'
 import { collection, getDocs, setDoc, doc } from 'firebase/firestore'
-import { v4 } from 'uuid';
+import { v4 } from 'uuid'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
 // User details
@@ -23,8 +23,7 @@ export const useUsersStore = defineStore('users', {
     loggedIn: false,
     loggedInUser: {} as User
   }),
-  getters: {
-  },
+  getters: {},
   actions: {
     async fetchUsers() {
       // const users: Array<never> = []
@@ -45,20 +44,21 @@ export const useUsersStore = defineStore('users', {
       })
 
       this.users = users
+      return users
     },
     async checkIfUserIsRegistered(email: string | null) {
-      const isRegistered = this.users.find((user) => user.email === email)
+      const isRegistered = this.users.find((user: User) => user.email === email)
       return isRegistered ? true : false
     },
     async registerUser(user: User) {
       // Add a new document with a generated id.
       try {
         await setDoc(doc(db, 'users', user.id), user)
-        await this.fetchUsers();
+        await this.fetchUsers()
 
-        
         // Save user to local storage for future use in the app
         localStorage.setItem('user', JSON.stringify(user))
+        return user
       } catch (err) {
         console.log(err)
       }
@@ -84,7 +84,6 @@ export const useUsersStore = defineStore('users', {
         } else {
           // Save user to the database
           await this.registerUser(user)
-
 
           // Save logged in user to the store
           this.loggedIn = true
@@ -133,7 +132,7 @@ export const useUsersStore = defineStore('users', {
 
         if (isRegistered) {
           // Get user details
-          const user = this.users.find((user) => user.email === loginDetails.email)
+          const user = this.users.find((user: User) => user.email === loginDetails.email)
 
           // Save user to local storage for future use in the app
           localStorage.setItem('user', JSON.stringify(user))
@@ -157,7 +156,7 @@ export const useUsersStore = defineStore('users', {
       const isRegistered = await this.checkIfUserIsRegistered(loginDetails.email)
       // Check if password and email is correct
       const user = this.users.find(
-        (user) => user.email === loginDetails.email && user.password === loginDetails.password
+        (user: User) => user.email === loginDetails.email && user.password === loginDetails.password
       )
 
       if (isRegistered && user) {
@@ -165,8 +164,8 @@ export const useUsersStore = defineStore('users', {
         localStorage.setItem('user', JSON.stringify(user))
 
         // Save logged in user to the store
-        this.loggedIn = true;
-        this.loggedInUser = user as User;
+        this.loggedIn = true
+        this.loggedInUser = user as User
         return true
       }
       return false
@@ -180,12 +179,12 @@ export const useUsersStore = defineStore('users', {
       }
     },
     async userLogout() {
-      if(this.loggedInUser) {
-        this.loggedInUser = {} as User;
-        this.loggedIn = false;
-        localStorage.clear();
-        return true;
-      } else return false;
+      if (this.loggedInUser) {
+        this.loggedInUser = {} as User
+        this.loggedIn = false
+        localStorage.clear()
+        return true
+      } else return false
     }
   }
 })
