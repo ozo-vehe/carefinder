@@ -12,23 +12,33 @@ describe('Hero', () => {
   })
 })
 
-// describe('Get hospitals from foursquare', () => {
+describe('Get hospitals from foursquare', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('should return an array hospitals in Kaduna', async () => {
+    const hospital_store = useHospitalsStore()
+    const hospitals = await hospital_store.fetchHospitals('Kaduna, Nigeria')
+    expect(hospitals.length).toBeGreaterThan(0)
+  })
+})
+
+// describe('Get registered users', () => {
 //   beforeEach(() => {
 //     setActivePinia(createPinia())
 //   })
 
-// test('should return an array hospitals in Kaduna', async () => {
-//   const hospital_store = useHospitalsStore()
-//   // const { fetchHospitals } = hospital_store
-//   await hospital_store.fetchHospitals('Kaduna, Nigeria')
-//   console.log(hospital_store.hospitals)
-//   expect(hospital_store.hospitals.length).toBeGreaterThan(0)
-// })
+//   const user = {
+//     id: '12345678',
+//     fullname: 'John Doe',
+//     email: 'email.1@gmail.com',
+//     password: '123456789'
+//   }
 
-// test('should return users', async () => {
-//   const users_store = useUsersStore()
-//   // const { fetchHospitals } = hospital_store
-//   const users = await users_store.fetchUsers()
-//   expect(users).toBeGreaterThan(0)
-// }, 60000)
+//   test('should return users', async () => {
+//     const users_store = useUsersStore()
+//     const users = await users_store.registerUser(user)
+//     expect(users.length).toBeGreaterThan(0)
+//   })
 // })

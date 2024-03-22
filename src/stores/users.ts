@@ -27,24 +27,29 @@ export const useUsersStore = defineStore('users', {
   actions: {
     async fetchUsers() {
       // const users: Array<never> = []
-      const querySnapshot = await getDocs(collection(db, 'users'))
-      const users: User[] = []
+      try {
+        const querySnapshot = await getDocs(collection(db, 'users'))
+        const users: User[] = []
 
-      querySnapshot.forEach((doc) => {
-        const modifiedDocData = { ...doc.data() }
+        querySnapshot.forEach((doc) => {
+          const modifiedDocData = { ...doc.data() }
 
-        const user: User = {
-          id: modifiedDocData.id,
-          fullname: modifiedDocData.fullname,
-          email: modifiedDocData.email,
-          password: modifiedDocData.password
-        }
+          const user: User = {
+            id: modifiedDocData.id,
+            fullname: modifiedDocData.fullname,
+            email: modifiedDocData.email,
+            password: modifiedDocData.password
+          }
 
-        users.push(user)
-      })
+          users.push(user)
+        })
 
-      this.users = users
-      return users
+        this.users = users
+        return users
+      } catch (err) {
+        console.log(err)
+        return err
+      }
     },
     async checkIfUserIsRegistered(email: string | null) {
       const isRegistered = this.users.find((user: User) => user.email === email)

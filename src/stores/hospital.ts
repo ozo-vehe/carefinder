@@ -92,6 +92,7 @@ export const useHospitalsStore = defineStore('hospitals', {
         })
 
         this.hospitals = hospitals
+        return hospitals
       } catch (err: any) {
         console.error(err)
         return { stats: 'error', error: err }

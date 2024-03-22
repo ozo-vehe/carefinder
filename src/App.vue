@@ -4,7 +4,7 @@ import NavBar from './components/NavBar.vue';
 import FooterSection from './components/FooterSection.vue';
 import { useUsersStore } from './stores/users';
 import { useHospitalsStore } from './stores/hospital';
-import { onBeforeMount, ref, watch } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 
 const users_store = useUsersStore();
 const hospitals_store = useHospitalsStore();
@@ -24,6 +24,7 @@ const success = () => {
 }
 const error = () => {
   console.log("error");
+  id.clearWatch();
 }
 
 const options = {
@@ -32,7 +33,7 @@ const options = {
   maximumAge: 0,
 };
 
-id = navigator.geolocation.watchPosition(success, error)
+id = navigator.geolocation.watchPosition(success, error, options)
 // const places = ref([]);
 // const lat = ref(7.464557);
 // const lng = ref(9.031044);
