@@ -91,7 +91,7 @@ export const useHospitalsStore = defineStore('hospitals', {
           sessionStorage.setItem('hospitals', JSON.stringify(hospitals))
         })
 
-        this.hospitals = hospitals;
+        this.hospitals = hospitals
         // return hospitals;
       } catch (err: any) {
         console.error(err)
@@ -160,6 +160,8 @@ export const useHospitalsStore = defineStore('hospitals', {
           markdown: boolean
           created_by: string
         }[]
+
+        return m_hospitals
       }
     }
   }

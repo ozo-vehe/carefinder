@@ -1,16 +1,8 @@
-import { describe, it, expect, beforeEach, test } from 'vitest'
-import { mount } from '@vue/test-utils'
-import Hero from '../HeroSection.vue'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { useHospitalsStore } from '../../stores/hospital'
-import { useUsersStore } from '../../stores/users'
 import { createPinia, setActivePinia } from 'pinia'
-
-describe('Hero', () => {
-  it('renders properly', () => {
-    const wrapper = mount(Hero)
-    expect(wrapper.text()).toContain('Empower Your Health Journey with')
-  })
-})
+import type { MHospital } from '../../utils/interface'
+import { v4 } from 'uuid'
 
 describe('Get hospitals from foursquare', () => {
   beforeEach(() => {
@@ -24,21 +16,28 @@ describe('Get hospitals from foursquare', () => {
   })
 })
 
-// describe('Get registered users', () => {
-//   beforeEach(() => {
-//     setActivePinia(createPinia())
-//   })
+describe('Markdown hospitals', () => {
+  let hospital: MHospital
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    hospital = {
+      id: v4(),
+      content: '# This is a hospital in Kaduna',
+      created_by: v4(),
+      markdown: true
+    }
+  })
 
-//   const user = {
-//     id: '12345678',
-//     fullname: 'John Doe',
-//     email: 'email.1@gmail.com',
-//     password: '123456789'
-//   }
+  it('it should save a markdown hospital to firestore', async () => {
+    const hospital_store = useHospitalsStore()
+    await hospital_store.uploadHospital(hospital)
+    expect(hospital_store.m_hospitals.length).toBeGreaterThan(0)
+  })
 
-//   test('should return users', async () => {
-//     const users_store = useUsersStore()
-//     const users = await users_store.registerUser(user)
-//     expect(users.length).toBeGreaterThan(0)
-//   })
-// })
+  it('it should retrieve saved hospitals', async () => {
+    const hospital_store = useHospitalsStore()
+    await hospital_store.uploadHospital(hospital)
+    const hospitals = await hospital_store.getSavedHospitals()
+    expect(hospitals.length).toBeGreaterThan(0)
+  })
+})

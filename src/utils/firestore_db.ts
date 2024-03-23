@@ -2,8 +2,6 @@ import { db } from './firebase'
 import { setDoc, doc } from 'firebase/firestore'
 import { collection, getDocs } from 'firebase/firestore'
 import type { MHospital } from './interface'
-import type { User } from './interface';
-
 
 export const saveHospitalToFirestore = async (hospital: Object, id: string) => {
   try {
@@ -15,10 +13,7 @@ export const saveHospitalToFirestore = async (hospital: Object, id: string) => {
 
 export const getSavedHospitalsFromFirestore = async () => {
   try {
-    console.log("Getting hospitals...")
-    const user_storage = localStorage.getItem("user")
-    const getSignedInUser: User | null = user_storage ? JSON.parse(user_storage) : null;
-    
+    console.log('Getting hospitals...')
     const data: Array<MHospital | undefined> = []
     const querySnapshot = await getDocs(collection(db, 'hospitals'))
     querySnapshot.forEach((doc) => {
@@ -27,12 +22,11 @@ export const getSavedHospitalsFromFirestore = async () => {
         id: m_data.id,
         content: m_data.content,
         markdown: m_data.markdown,
-        created_by: getSignedInUser?.id ?? "",
+        created_by: m_data.created_by
       }
       data.push(hospital)
     })
-    return data;
-    
+    return data
   } catch (err) {
     console.log(err)
   }

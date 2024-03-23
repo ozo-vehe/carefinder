@@ -66,14 +66,14 @@ const handleSearch = async () => {
       </div>
 
       <div
-        class="header_search border border-slate-400 bg-white flex items-center justify-between pr-7 h-[50px] gap-2 w-[400px] rounded-full">
+        class="header_search border border-slate-400 bg-white flex items-center justify-between pr-2 h-[50px] gap-2 w-[400px] rounded-full">
         <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text"
-          v-model.lazy="search_keyword" name="search" id="search" placeholder="Enter a location...">
-        <div class="search_imga">
+          v-model.lazy="search_keyword" name="search" id="search" placeholder="City, Country">
+        <div class="search_img w-[80px] h-[35px] flex items-center justify-center rounded-full bg-green_v_1">
           <img v-if="loading" class="w-6 h-6 animate-spin"
-            src="https://img.icons8.com/fluency-systems-filled/48/spinner-frame-2.png" alt="spinner-frame-2" />
+            src="https://img.icons8.com/fluency-systems-filled/f7f7f7/48/spinner-frame-2.png" alt="spinner-frame-2" />
           <img v-else @click="handleSearch" class="w-6 h-6 cursor-pointer"
-            src="https://img.icons8.com/ios/50/search--v1.png" alt="search--v1" />
+            src="https://img.icons8.com/ios/f7f7f7/50/search--v1.png" alt="search--v1" />
         </div>
       </div>
     </div>

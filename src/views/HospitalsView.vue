@@ -7,7 +7,7 @@ import { onBeforeMount, watch, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSearch } from '@/composables/search';
 import ShareComponent from '@/components/ShareComponent.vue';
-import {getSavedHospitalsFromFirestore} from '@/utils/firestore_db';
+import { getSavedHospitalsFromFirestore } from '@/utils/firestore_db';
 
 const user_store = useUsersStore();
 const hospital_store = useHospitalsStore();
@@ -42,7 +42,7 @@ const handleSearch = async () => {
 
 onBeforeMount(async () => {
   const status = await fetchHospitals();
-  if(status?.stats === "error") {
+  if (status?.stats === "error") {
     console.log("error")
     is_error.value = true;
     error_message.value = status.error;
@@ -62,21 +62,23 @@ onBeforeMount(async () => {
   <ShareComponent v-if="show_share" :hospitals="hospitals" />
   <header class="hero px-5 lg:px-20 md:px-16 sm:px-12 min-h-[600px] flex flex-col items-center justify-evenly">
     <div class="header_text flex flex-col gap-2 items-center justify-center">
-        <h1
-          class="text-[40px] lg:text-[48px] md:text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">Unlocking Health at Your Fingertips With<br><span class="text-green_v_2">CareFinder</span></h1>
-        <p class="text-slate-500 max-w-[450px] text-center">Discover hospitals in your region with a simple click. Carefinder empowers you to find the healthcare you need, right where you are.</p>
-      </div>
+      <h1
+        class="text-[40px] lg:text-[48px] md:text-[48px] text-slate-800 font-bold capitalize text-center leading-[56px]">
+        Unlocking Health at Your Fingertips With<br><span class="text-green_v_2">CareFinder</span></h1>
+      <p class="text-slate-500 max-w-[450px] text-center">Discover hospitals in your region with a simple click.
+        Carefinder empowers you to find the healthcare you need, right where you are.</p>
+    </div>
 
     <div class="header_links flex flex-wrap gap-10 items-end justify-center w-full">
       <div
-        class="header_search border border-slate-400 bg-white flex items-center justify-between pr-7 h-[50px] gap-2 w-[400px] rounded-full">
+        class="header_search border border-slate-400 bg-white flex items-center justify-between pr-2 h-[50px] gap-2 w-[400px] rounded-full">
         <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text"
-          v-model.lazy="search_keyword" name="search" id="search" placeholder="Enter a location...">
-        <div class="search_imga">
+          v-model.lazy="search_keyword" name="search" id="search" placeholder="City, Country">
+        <div class="search_img w-[80px] h-[35px] flex items-center justify-center rounded-full bg-green_v_1">
           <img v-if="loading" class="w-6 h-6 animate-spin"
-            src="https://img.icons8.com/fluency-systems-filled/48/spinner-frame-2.png" alt="spinner-frame-2" />
+            src="https://img.icons8.com/fluency-systems-filled/f7f7f7/48/spinner-frame-2.png" alt="spinner-frame-2" />
           <img v-else @click="handleSearch" class="w-6 h-6 cursor-pointer"
-            src="https://img.icons8.com/ios/50/search--v1.png" alt="search--v1" />
+            src="https://img.icons8.com/ios/f7f7f7/50/search--v1.png" alt="search--v1" />
         </div>
       </div>
     </div>
@@ -108,16 +110,21 @@ onBeforeMount(async () => {
     </header>
 
     <section class="hospital_container flex flex-wrap items-center justify-center gap-8">
-      
-      <p v-if="!get_location.location && get_location.status !== ''" class="text-red-600 bg-red-200 px-4 py-2 rounded-[8px] min-w-[300px] text-center">{{ get_location.status }}, use the search bar to get list of hospitals close to you...</p>
+
+      <p v-if="!get_location.location && get_location.status !== ''"
+        class="text-red-600 bg-red-200 px-4 py-2 rounded-[8px] min-w-[300px] text-center">{{ get_location.status }}, use
+        the search bar to get list of hospitals close to you...</p>
       <template v-else-if="hospitals.length > 0 && !is_error">
-        <HospitalCard :markdown="false" :m_hospital="undefined" :hospital="hospital" v-for="hospital in hospitals" :key="hospital.id" />
+        <HospitalCard :markdown="false" :m_hospital="undefined" :hospital="hospital" v-for="hospital in hospitals"
+          :key="hospital.id" />
       </template>
       <template v-else-if="hospitals.length < 1 && !is_error">
-      <img class="w-6 h-6 animate-spin"
-        src="https://img.icons8.com/fluency-systems-filled/48/spinner-frame-2.png" alt="spinner-frame-2" />
+        <img class="w-6 h-6 animate-spin" src="https://img.icons8.com/fluency-systems-filled/48/spinner-frame-2.png"
+          alt="spinner-frame-2" />
       </template>
-      <p v-else class="text-red-600 bg-red-200 px-4 py-2 rounded-[8px] min-w-[300px] text-center">{{ error_message }}, please try again another time...</p>
+      <p v-else class="text-red-600 bg-red-200 px-4 py-2 rounded-[8px] min-w-[300px] text-center">{{ error_message }},
+        please
+        try again another time...</p>
     </section>
   </section>
 </template>

@@ -18,8 +18,9 @@ export interface MHospital {
 
 export interface User {
   id: string
-  name: string
+  fullname: string
   email: string
-  image: string
+  image: string | null
+  password: string | null
   role: string
 }
