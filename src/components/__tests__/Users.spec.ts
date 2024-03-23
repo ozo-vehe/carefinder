@@ -26,7 +26,7 @@ describe('Get registered users', () => {
   it('should fetch saved users', async () => {
     const users_store = useUsersStore()
     await users_store.registerUser(user)
-    const users = await users_store.fetchUsers()
+    const users: Array<User> = await users_store.fetchUsers()
     expect(users.length).toBeGreaterThan(0)
   })
 })
