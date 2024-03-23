@@ -42,4 +42,4 @@ At CareFinder, we believe in the power of community-driven innovation. We welcom
 
 ## Contact Us
 
-If you have any questions or inquiries about CareFinder, please don't hesitate to reach out to our team at [contact@carefinder.com](mailto: johnnie.vehe@gmail.com). We're here to assist you and ensure you have a positive experience using our platform. Thank you for choosing CareFinder - Your Partner in Wellness.
+If you have any questions or inquiries about CareFinder, please don't hesitate to reach out to our team at [contact@carefinder.com](mailto:johnnie.vehe@gmail.com). We're here to assist you and ensure you have a positive experience using our platform. Thank you for choosing CareFinder - Your Partner in Wellness.
