@@ -2,6 +2,9 @@
 
 Welcome to CareFinder - Your Comprehensive Solution for Navigating Nigeria's Healthcare Landscape!
 
+![CareFinder](https://github.com/ozo-vehe/carefinder/assets/65238842/f356a48d-000f-4519-90b0-370571603fc5)
+
+
 ## Introduction
 
 In Nigeria, accessing healthcare can often be a daunting task, with challenges ranging from geographical barriers to lack of information about available resources. At CareFinder, we recognize the fundamental importance of easy access to healthcare for all individuals. Our platform is meticulously crafted to address these challenges and provide a seamless experience for users seeking healthcare facilities.
