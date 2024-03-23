@@ -37,7 +37,7 @@ describe('Markdown hospitals', () => {
   it('it should retrieve saved hospitals', async () => {
     const hospital_store = useHospitalsStore()
     await hospital_store.uploadHospital(hospital)
-    const hospitals: Array<MHospital> = await hospital_store.getSavedHospitals()
-    expect(hospitals.length).toBeGreaterThan(0)
+    const hospitals: Array<MHospital | undefined> = await hospital_store.getSavedHospitals()
+    expect(hospitals?.length).toBeGreaterThan(0)
   })
 })
