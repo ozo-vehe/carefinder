@@ -10,22 +10,27 @@ body {
   background-repeat: no-repeat;
   /* background-attachment: fixed; */
 }
+
 .hospital h1 {
   margin: 0px !important;
   text-wrap: normal;
   font-size: 30px !important;
   line-height: normal;
 }
-.hospital h2, .hospital h3 {
+
+.hospital h2,
+.hospital h3 {
   margin-top: 10px !important;
   font-weight: 500 !important;
   font-size: 16px !important;
 }
+
 .hospital ul {
   margin-top: 10px;
   text-transform: capitalize;
   font-size: 16px;
 }
+
 .hospital ul li {
   margin-top: 0px !important;
 }
@@ -33,7 +38,8 @@ body {
 .hospital_data div * {
   display: none;
 }
-.hospital_data div > :first-child {
+
+.hospital_data div> :first-child {
   display: block !important;
   color: rgb(40 84 48);
   font-size: 20px !important;

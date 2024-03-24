@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import airbnb from '@/assets/images/airbnb.png';
-import google from '@/assets/images/google.png';
-import microsoft from '@/assets/images/microsoft.png';
-import hubspot from '@/assets/images/hubspot.png';
 import altschool from '@/assets/images/altschool.webp';
 import { useSearch } from '@/composables/search';
 import { useRouter } from 'vue-router';
@@ -16,16 +12,69 @@ interface Sponsor {
 
 let search_keyword: Ref<string | null> = ref(null);
 let loading: Ref<boolean> = ref(false);
+let show_search_list: Ref<boolean> = ref(false);
+let search_list: Ref<string[]> = ref([]);
 
 const router = useRouter();
 
 const sponsors: Sponsor[] = [
-  // { image: airbnb, name: 'airbnb' },
-  // { image: hubspot, name: 'hubspot' },
-  // { image: google, name: 'google' },
-  // { image: microsoft, name: 'microsoft' },
   { image: altschool, name: 'altschool' }
 ]
+
+const autocomplete = async () => {
+  try {
+
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: import.meta.env.VITE_FOURSQUARE_API_KEY as string,
+      }
+    };
+    const searchParams = new URLSearchParams({
+      query: search_keyword.value as string,
+      types: 'geo'
+    });
+
+
+    const req = fetch(`https://api.foursquare.com/v3/autocomplete?${searchParams}`, options)
+    const res = await req;
+    const data = await res.json();
+    console.log(data);
+
+    const search_arr = data.results.map((item: any) => item.text.primary);
+    search_list.value = search_arr;
+    console.log(search_list.value);
+    show_search_list.value = true;
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// async function getAddressDetails() {
+//   try {
+//     const searchParams = new URLSearchParams({
+//       session_token: '92080MAVXRGADMTMKJSADCDQGMT3NDKL',
+//     });
+//     const results = await fetch(
+//       `https://api.foursquare.com/v3/address/555341570000072f2955-5220?${searchParams}`,
+//       {
+//         method: 'GET',
+//         headers: {
+//           Accept: 'application/json',
+//           Authorization: import.meta.env.VITE_FOURSQUARE_ACCESS_TOKEN as string,
+//         }
+//       }
+//     );
+//     const data = await results.json();
+//     return data;
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+
+
 
 const handleSearch = async () => {
   loading.value = true;
@@ -39,6 +88,12 @@ const handleSearch = async () => {
   finally {
     loading.value = false;
   }
+}
+
+// A function to change the search keyword from list fo suggested autocomplete options
+const changeSearchKeyword = (list: string) => {
+  search_keyword.value = list;
+  show_search_list.value = false;
 }
 
 </script>
@@ -65,15 +120,27 @@ const handleSearch = async () => {
         </div>
       </div>
 
-      <div
-        class="header_search border border-slate-400 bg-white flex items-center justify-between pr-2 h-[50px] gap-2 w-[400px] rounded-full">
-        <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text"
-          v-model.lazy="search_keyword" name="search" id="search" placeholder="City, Country">
-        <div class="search_img w-[80px] h-[35px] flex items-center justify-center rounded-full bg-green_v_1">
-          <img v-if="loading" class="w-6 h-6 animate-spin"
-            src="https://img.icons8.com/fluency-systems-filled/f7f7f7/48/spinner-frame-2.png" alt="spinner-frame-2" />
-          <img v-else @click="handleSearch" class="w-6 h-6 cursor-pointer"
-            src="https://img.icons8.com/ios/f7f7f7/50/search--v1.png" alt="search--v1" />
+      <div class="search_bar relative">
+        <div
+          class="border border-slate-400 bg-white flex items-center justify-between pr-2 h-[50px] gap-2 w-[400px] rounded-full">
+          <input class="outline-none h-full text-slate-800 w-full rounded-full pl-4 placeholder:text-sm" type="text"
+            v-model.lazy="search_keyword" @change="autocomplete" name="search" id="search" placeholder="City, Country">
+          <div class="search_img w-[80px] h-[35px] flex items-center justify-center rounded-full bg-green_v_1">
+            <img v-if="loading" class="w-6 h-6 animate-spin"
+              src="https://img.icons8.com/fluency-systems-filled/f7f7f7/48/spinner-frame-2.png" alt="spinner-frame-2" />
+            <img v-else @click="handleSearch" class="w-6 h-6 cursor-pointer"
+              src="https://img.icons8.com/ios/f7f7f7/50/search--v1.png" alt="search--v1" />
+          </div>
+        </div>
+
+        <div v-if="show_search_list"
+          class="autocomplete_section bg-white border border-slate-300 rounded-[8px] top-[52px] absolute w-full z-20">
+          <ul class="autocomplete_list text-slate-600">
+            <li @click="changeSearchKeyword(list)" v-for="(list, index) in search_list" :key="index"
+              class="autocomplete_item p-2 cursor-pointer border-b border-slate-300 hover:bg-slate-100/50 transition-all duration-300 rounded-[8px]">
+              {{
+            list }}</li>
+          </ul>
         </div>
       </div>
     </div>

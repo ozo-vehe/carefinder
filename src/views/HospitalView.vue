@@ -45,13 +45,14 @@ onMounted(async () => {
 
 <template>
   <section class="hospital bg-white/70 py-12 px-5 lg:px-20 md:px-16 sm:px-12">
-    <div v-if="hospital_display === 'hospital'" class="hospital_details_container flex flex-wrap items-start justify-center gap-12">
+    <div v-if="hospital_display === 'hospital'"
+      class="hospital_details_container flex flex-wrap items-start justify-center gap-12">
       <div class="w-full lg:w-[45%] md:w-[45%] sm:w-full order-2 lg:order-1 md:order-1 sm:order-2">
         <header class="">
-          <h3 class="font-[500] text-[28px] lg:[text-34px] md:text-[30px] sm:text-[28px] capitalize">{{ hospital?.name
-            }}</h3>
-          <p class="text-[16px] lg:[text-18px] md:text-[18px] sm:text-[16px] text-slate-500 font-[400]">{{
-            hospital?.address }}</p>
+          <h1 class="font-[500] text-[28px] lg:[text-34px] md:text-[30px] sm:text-[28px] capitalize">{{ hospital?.name
+            }}</h1>
+          <h2 class="text-[16px] lg:[text-18px] md:text-[18px] sm:text-[16px] text-slate-500 font-[400]">{{
+      hospital?.address }}</h2>
         </header>
       </div>
 
@@ -63,7 +64,7 @@ onMounted(async () => {
 
     <div v-else class="hospital_details_container flex flex-wrap items-start justify-center gap-12">
       <div class="m_hospital w-full lg:w-[45%] md:w-[45%] sm:w-full order-2 lg:order-1 md:order-1 sm:order-2">
-        <MdPreview :modelValue="m_hospital.content" :style="{ padding: '0px'}" />
+        <MdPreview :modelValue="m_hospital.content" :style="{ padding: '0px' }" />
       </div>
 
       <div id="map_container"
@@ -74,5 +75,4 @@ onMounted(async () => {
   </section>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
