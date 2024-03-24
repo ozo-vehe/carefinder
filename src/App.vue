@@ -5,6 +5,9 @@ import FooterSection from './components/FooterSection.vue';
 import { useUsersStore } from './stores/users';
 import { useHospitalsStore } from './stores/hospital';
 import { onBeforeMount, ref } from 'vue';
+import { inject } from "@vercel/analytics";
+
+inject();
 
 const users_store = useUsersStore();
 const hospitals_store = useHospitalsStore();
