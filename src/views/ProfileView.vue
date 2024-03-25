@@ -7,56 +7,63 @@ import type { MHospital } from '@/utils/interface';
 import { useRouter, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
-const users_store = useUsersStore();
-const hospitals_store = useHospitalsStore();
-const router = useRouter();
-const route = useRoute();
-const loading: Ref<boolean> = ref(false);
+// Initialize necessary variables and hooks
+const users_store = useUsersStore(); // Access user store
+const hospitals_store = useHospitalsStore(); // Access hospitals store
+const router = useRouter(); // Router instance
+const route = useRoute(); // Route instance
+const loading: Ref<boolean> = ref(false); // Loading state for async operations
 
+// Destructure required properties from stores
+const { loggedInUser, userLogout } = users_store; // User related functions
+const { m_hospitals } = storeToRefs(hospitals_store); // Hospitals data
 
-const { loggedInUser, userLogout } = users_store;
-const { m_hospitals } = storeToRefs(hospitals_store);
-
+// Array to hold user-specific hospitals
 const hospitals: Ref<Array<MHospital | undefined>> = ref([]);
 
+// Function to handle user logout
 const handleLogout = async () => {
-  loading.value = true;
-  console.log("clicked")
+  loading.value = true; // Set loading state
+  console.log("clicked"); // Log click event
   try {
-    const loggedOut = await userLogout();
-    loggedOut ? router.push("/login") : alert("User not signed in...");
+    const loggedOut = await userLogout(); // Attempt logout
+    loggedOut ? router.push("/login") : alert("User not signed in..."); // Redirect to login if successful
   } catch (error) {
-    console.log(error)
+    console.log(error); // Log error if logout fails
   }
-  loading.value = false;
+  loading.value = false; // Reset loading state
 }
 
-
+// Function to filter hospitals based on user ID
 const getUserHospitals = (user_id: string) => {
-  console.log("Getting Hospitals");
-  let filteredHospitals: any = []
+  let filteredHospitals: any = [];
+
+  // Filter hospitals created by the current user
   m_hospitals?.value.forEach((hospital: MHospital) => {
-    hospital.created_by === user_id && filteredHospitals.push(hospital);
+    console.log(hospital.created_by, user_id); // Log user and hospital creator ID
+    hospital.created_by == user_id && filteredHospitals.push(hospital); // Add hospital to filtered list if created by the current user
   });
 
-  hospitals.value = filteredHospitals;
+  hospitals.value = filteredHospitals; // Update hospitals list
 }
 
+// Watch for changes in user ID and update hospitals accordingly
 watch({ user_id: route.params.user_id }, async (newVal) => {
-  getUserHospitals(newVal.user_id as string);
+  getUserHospitals(newVal.user_id as string); // Fetch user-specific hospitals
 })
 
+// Fetch user-specific hospitals on component mount
 onMounted(async () => {
-  console.log("Before mount")
-  getUserHospitals(route.params.user_id as string);
+  console.log("Before mount"); // Log before mount
+  getUserHospitals(route.params.user_id as string); // Fetch user-specific hospitals
 })
-
 </script>
 
 <template>
   <section class="hospital bg-white/90 pb-12">
     <header class="w-full relative h-[300px] py-12 px-5 lg:px-20 md:px-16 sm:px-12">
-      <img class="absolute left-5 lg:left-20 md:left-16 sm:left-12 -bottom-10 bg-green_v_1 w-20 h-20 p-4 object-cover shadow-md rounded-full"
+      <img
+        class="absolute left-5 lg:left-20 md:left-16 sm:left-12 -bottom-10 bg-green_v_1 w-20 h-20 p-4 object-cover shadow-md rounded-full"
         src="https://img.icons8.com/ios-glyphs/ffffff/90/user--v1.png" alt="user--v1" />
 
       <button
@@ -76,7 +83,7 @@ onMounted(async () => {
     </div>
 
     <div class="created_hospitals mt-16 pt-4 px-5 lg:px-20 md:px-16 sm:px-12">
-      <h2 class="text-[32px] font-bold text-center mb-4">Created Hospitals</h2>
+      <h2 class="font-bold text-center mb-4">Created Hospitals</h2>
       <div class="hospital_container flex flex-wrap items-center justify-center gap-8 mb-10">
         <template v-if="hospitals && hospitals.length > 0">
           <HospitalCard :markdown="true" :hospital="undefined" :m_hospital="hospital" v-for="hospital in hospitals"
@@ -97,5 +104,9 @@ header {
   background-size: cover;
   background-repeat: no-repeat;
   /* color: #5f8d4e */
+}
+
+.created_hospitals>h2 {
+  font-size: 32px !important;
 }
 </style>

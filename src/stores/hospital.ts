@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { v4 } from 'uuid'
 import { getSavedHospitalsFromFirestore, saveHospitalToFirestore } from '@/utils/firestore_db'
-import type { Hospital, MHospital } from '@/utils/interface'
+import type { Hospital, MHospital, User } from '@/utils/interface'
 
 export const useHospitalsStore = defineStore('hospitals', {
   state: () => ({
@@ -129,12 +129,15 @@ export const useHospitalsStore = defineStore('hospitals', {
       // }
     },
     async uploadHospital(hospital: any) {
-      console.log(hospital)
       const id = v4()
       hospital.id = id
 
       if (hospital.markdown) {
-        console.log(hospital)
+        // console.log(hospital)
+        const loggedInUser = localStorage.getItem('user')
+        const user: User = { ...JSON.parse(loggedInUser || '') }
+        console.log(user)
+        hospital.created_by = user.id
         await saveHospitalToFirestore(hospital, hospital.id)
         const m_hospitals = await getSavedHospitalsFromFirestore()
 
@@ -146,6 +149,7 @@ export const useHospitalsStore = defineStore('hospitals', {
             created_by: string
           }[]
         }
+        // return false
       } else {
         console.log(hospital)
       }
